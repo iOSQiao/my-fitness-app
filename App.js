@@ -2,9 +2,9 @@ import { useEffect } from "react";
 import { View, StyleSheet, ScrollView, Text, SafeAreaView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import Section from "@/components/home/Section";
-import ChallengesView from "@/components/home/ChallengesView";
-import WorkoutsView from "@/components/home/WorkoutsView";
+import Section from "./components/home/Section";
+import ChallengesView from "./components/home/ChallengesView";
+import WorkoutsView from "./components/home/WorkoutsView";
 
 export default function App() {
     // const navigation = useNavigation();
