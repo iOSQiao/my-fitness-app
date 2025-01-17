@@ -5,10 +5,10 @@ const { width } = Dimensions.get("window");
 
 export default function ChallengesView() {
     const items = [
-        { id: "1", uri: require("../../assets/images/home/test_challenges.png"), title: "The Squat Challenge", desc: '30 days'  },
-        { id: "2", uri: require("../../assets/images/home/test_challenges.png"), title: "Squat Variations", desc: '30 days'  },
-        { id: "3", uri: require("../../assets/images/home/test_challenges.png"), title: "For Beginners", desc: '30 days'  },
-        { id: "4", uri: require("../../assets/images/home/test_challenges.png"), title: "Cardio & Squat - Booty Burn", desc: '30 days'  },
+        { uri: require("../../assets/images/home/challenge_1.jpg"), title: "The squats challenge", desc: '30 days'  },
+        { uri: require("../../assets/images/home/challenge_2.jpg"), title: "The push-ups challenge", desc: '30 days'  },
+        { uri: require("../../assets/images/home/challenge_3.jpg"), title: "The crunch challenge", desc: '30 days'  },
+        { uri: require("../../assets/images/home/challenge_4.jpg"), title: "The pull-ups challenge", desc: '30 days'  },
     ];
 
     return (

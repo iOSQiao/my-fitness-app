@@ -7,7 +7,7 @@ import ChallengesView from "../../components/home/ChallengesView";
 import WorkoutsView from "../../components/home/WorkoutsView";
 
 export default function HomeScreen() {
-    // const navigation = useNavigation();
+    const navigation = useNavigation();
 
     return (
       <SafeAreaView style={{flex: 1}}>
@@ -16,22 +16,22 @@ export default function HomeScreen() {
                 style={{ width: "100%", height: "100%" }}
                 contentContainerStyle={styles.scrollViewContent}
                 onScroll={(event) => {
-                    // const currentOffset = event.nativeEvent.contentOffset.y;
-                    // if (currentOffset > 36 * 2 + 16) {
-                    //     navigation.setOptions({
-                    //         headerTitle: "Fitness Application",
-                    //         headerStyle: {
-                    //             backgroundColor: "rgba(255, 255, 255, 0.5)",
-                    //         },
-                    //     });
-                    // } else {
-                    //     navigation.setOptions({
-                    //         headerTitle: "",
-                    //         headerStyle: {
-                    //             backgroundColor: "#fff",
-                    //         },
-                    //     });
-                    // }
+                    const currentOffset = event.nativeEvent.contentOffset.y;
+                    if (currentOffset > 36 * 2 + 16) {
+                        navigation.setOptions({
+                            headerTitle: "Fitness Application",
+                            headerStyle: {
+                                backgroundColor: "rgba(255, 255, 255, 0.5)",
+                            },
+                        });
+                    } else {
+                        navigation.setOptions({
+                            headerTitle: "",
+                            headerStyle: {
+                                backgroundColor: "#fff",
+                            },
+                        });
+                    }
                 }}>
                 <View style={styles.content}>
                     <Text style={styles.title}>{'Fitness\nApplication'}</Text>
