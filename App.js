@@ -6,7 +6,8 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 import HomeLayout from "./app/home/_layout";
 import ChallengeLayout from "./app/challenge/_layout";
-import SettingsScreen from "./app/settings";
+import WorkoutsScreen from "./app/workouts/_layout";
+import ExercisesLayout from "./app/exercises/_layout";
 
 const Tab = createBottomTabNavigator();
 
@@ -45,7 +46,7 @@ export default function App() {
                 />
                 <Tab.Screen
                     name="Workouts"
-                    component={SettingsScreen}
+                    component={WorkoutsScreen}
                     options={{
                         title: "Workouts",
                         tabBarIcon: ({ color, size }) => (
@@ -54,10 +55,10 @@ export default function App() {
                     }}
                 />
                 <Tab.Screen
-                    name="Settings"
-                    component={SettingsScreen}
+                    name="Exercises"
+                    component={ExercisesLayout}
                     options={{
-                        title: "Settings",
+                        title: "Exercises",
                         tabBarIcon: ({ color, size }) => (
                             <CustomTabBarIcon source={require("./assets/tabs/user.png")} color={color} size={size} />
                         ),

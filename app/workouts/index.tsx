@@ -1,10 +1,9 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from "react-native";
 
-export default function SettingsScreen() {
+export default function WorkoutsScreen() {
     return (
         <View style={styles.screen}>
-            <Text>Settins Screen</Text>
+            <Text>Workouts Screen</Text>
         </View>
     );
 }
