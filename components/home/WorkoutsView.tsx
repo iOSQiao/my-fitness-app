@@ -6,24 +6,22 @@ const { width } = Dimensions.get("window");
 export default function WorkoutsView() {
     const items = [
         {
-            id: "1",
-            uri: require("../../assets/images/home/test_workouts.png"),
+            uri: require("../../assets/planks.jpg"),
+            title: "Burpees, Squats & Planks",
+        },
+        {
+
+            uri: require("../../assets/shape-body.jpg"),
+            title: "Shape your body",
+        },
+        {
+
+            uri: require("../../assets/HIIT.jpg"),
+            title: "HIIT Workout",
+        },
+        {
+            uri: require("../../assets/squat-variations.jpg"),
             title: "Squat Variations",
-        },
-        {
-            id: "2",
-            uri: require("../../assets/images/home/test_workouts.png"),
-            title: "Fat Burning HIIT Workout",
-        },
-        {
-            id: "3",
-            uri: require("../../assets/images/home/test_workouts.png"),
-            title: "Tone your Butt Thighs and Legs",
-        },
-        {
-            id: "4",
-            uri: require("../../assets/images/home/test_workouts.png"),
-            title: "Cardio & Squat - Booty Burn",
         },
     ];
 
