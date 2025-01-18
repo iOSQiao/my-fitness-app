@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import Section from "../../components/home/Section";
 import ChallengesView from "../../components/home/ChallengesView";
 import WorkoutsView from "../../components/home/WorkoutsView";
+import CurrentChallenge from "../../components/home/CurrentChallenge";
 
 export default function HomeScreen() {
     const navigation = useNavigation();
@@ -35,6 +36,7 @@ export default function HomeScreen() {
                 }}>
                 <View style={styles.content}>
                     <Text style={styles.title}>{'Fitness\nApplication'}</Text>
+                    <CurrentChallenge></CurrentChallenge>
                     <Section
                         title={"Challenges"}
                         desc={"Start the Challenges and fulfill your Potential"}>
