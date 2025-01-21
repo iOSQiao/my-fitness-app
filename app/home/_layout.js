@@ -1,23 +1,33 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import HomeScreen from "./index";
+import RecordsScreen from "./records";
+import DetailsScreen from "./details";
+import BeginScreen from "./begin";
+import EndScreen from "./end";
 
 const Stack = createStackNavigator();
 
 export default function Home() {
     return (
-        <Stack.Navigator initialRouteName="home">
-            <Stack.Screen name="home" component={HomeScreen} options={{ title: "", headerShadowVisible: false, }} />
+        <Stack.Navigator
+            initialRouteName="home"
+            screenOptions={{
+                headerBackTitleVisible: false,
+                headerTintColor: "#000",
+                headerStyle: { backgroundColor: "#fff" },
+                headerShadowVisible: false,
+            }}>
+            <Stack.Screen name="home" component={HomeScreen} options={{ title: "" }} />
+            <Stack.Screen
+                name="records"
+                component={RecordsScreen}
+                options={{ title: "Challenge", tabBarVisible: false }}
+            />
+            <Stack.Screen name="details" component={DetailsScreen} options={{ title: "" }} />
+            <Stack.Screen name="begin" component={BeginScreen} options={{ title: "" }} />
+            <Stack.Screen name="end" component={EndScreen} options={{ title: "" }} />
         </Stack.Navigator>
     );
 }
-
-const styles = StyleSheet.create({
-    screen: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-});

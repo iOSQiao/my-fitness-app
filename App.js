@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import { Image } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -9,18 +9,17 @@ import ChallengeLayout from "./app/challenge/_layout";
 import WorkoutsScreen from "./app/workouts/_layout";
 import ExercisesLayout from "./app/exercises/_layout";
 
+import * as configHelper from "./utils/configHelper";
+
 const Tab = createBottomTabNavigator();
 
 const CustomTabBarIcon = ({ source, color, size }) => {
-    return (
-        <Image
-            source={source}
-            style={{ width: size, height: size }}
-        />
-    );
+    return <Image source={source} style={{ width: size, height: size }} />;
 };
 
 export default function App() {
+    useEffect(() => {}, []);
+
     return (
         <NavigationContainer>
             <Tab.Navigator screenOptions={{ headerShown: false }}>
@@ -30,8 +29,13 @@ export default function App() {
                     options={{
                         title: "Home",
                         tabBarIcon: ({ color, size }) => (
-                            <CustomTabBarIcon source={require("./assets/tabs/home.png")} color={color} size={size} />
+                            <CustomTabBarIcon
+                                source={require("./assets/tabs/home.png")}
+                                color={color}
+                                size={size}
+                            />
                         ),
+                        tabBarVisible: false
                     }}
                 />
                 <Tab.Screen
@@ -40,7 +44,11 @@ export default function App() {
                     options={{
                         title: "Challenge",
                         tabBarIcon: ({ color, size }) => (
-                            <CustomTabBarIcon source={require("./assets/tabs/challenge.png")} color={color} size={size} />
+                            <CustomTabBarIcon
+                                source={require("./assets/tabs/challenge.png")}
+                                color={color}
+                                size={size}
+                            />
                         ),
                     }}
                 />
@@ -50,7 +58,11 @@ export default function App() {
                     options={{
                         title: "Workouts",
                         tabBarIcon: ({ color, size }) => (
-                            <CustomTabBarIcon source={require("./assets/tabs/Workouts.jpg")} color={color} size={size} />
+                            <CustomTabBarIcon
+                                source={require("./assets/tabs/Workouts.jpg")}
+                                color={color}
+                                size={size}
+                            />
                         ),
                     }}
                 />
@@ -60,7 +72,11 @@ export default function App() {
                     options={{
                         title: "Exercises",
                         tabBarIcon: ({ color, size }) => (
-                            <CustomTabBarIcon source={require("./assets/tabs/user.png")} color={color} size={size} />
+                            <CustomTabBarIcon
+                                source={require("./assets/tabs/user.png")}
+                                color={color}
+                                size={size}
+                            />
                         ),
                     }}
                 />

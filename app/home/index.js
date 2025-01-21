@@ -10,6 +10,12 @@ import CurrentChallenge from "../../components/home/CurrentChallenge";
 export default function HomeScreen() {
     const navigation = useNavigation();
 
+    const handleClickeChallenge = (item) => {
+        navigation.navigate("records", {
+            challenge: item,
+        });
+    }
+
     return (
       <SafeAreaView style={{flex: 1}}>
         <View style={styles.container}>
@@ -40,7 +46,7 @@ export default function HomeScreen() {
                     <Section
                         title={"Challenges"}
                         desc={"Start the Challenges and fulfill your Potential"}>
-                        <ChallengesView></ChallengesView>
+                        <ChallengesView onPress={handleClickeChallenge}></ChallengesView>
                     </Section>
                     <Section title={"Workouts"} desc={"Test yourself and see concrete results"}>
                         <WorkoutsView></WorkoutsView>

@@ -16,7 +16,7 @@ export default function CurrentChallenge() {
             </View>
             <View style={styles.content}>
                 <Image
-                    source={require("../../assets/images/home/challenge_2.jpg")} // 替换为你的图片链接
+                    source={require("../../assets/images/home/challenge_1.jpg")}
                     style={styles.image}></Image>
                 <Text style={styles.day}>day 5</Text>
                 <Text style={styles.challenge}>current challenge</Text>
