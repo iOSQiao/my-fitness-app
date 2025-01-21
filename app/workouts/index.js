@@ -54,33 +54,40 @@ export default function HomeScreen({ navigation }) {
                             navigation.navigate("Workout", {
                                 items: [
                                     {
-                                        title: "Gelato",
+                                        title: "Exercise",
                                         contents: [
                                             {
-                                                title: "Vanilla",
-                                                img: require("../../assets/vanilla.jpg"),
-                                                inStock: true,
+                                                title: "Plank Shoulder Taps",
+                                                img: require("../../assets/Plank-Shoulder-Taps.jpg"),
+                                                duration: "40 seconds"
                                             },
                                             {
-                                                title: "Chocolate (Disabled)",
-                                                img: require("../../assets/chocolate.jpg"),
-                                                inStock: false,
+                                                title: "Side Plank and Leg lift",
+                                                img: require("../../assets/Side-Plank-Leg-Lift.jpg"),
+                                                duration: "2*40 seconds"
                                             },
                                             {
-                                                title: "Mint",
-                                                img: require("../../assets/mint.jpg"),
-                                                inStock: true,
+                                                title: "Narrow Bodyweight Squat",
+                                                img: require("../../assets/Narrow-Squat.jpg"),
+                                                duration: "40 seconds"
+                                            },
+                                            {
+                                                title: "Bodyweight Overhead Squats",
+                                                img: require("../../assets/Overhead-Squat.jpg"),
+                                                duration: "40 seconds"
+                                            },
+                                            {
+                                                title: "Burpees",
+                                                img: require("../../assets/burpees.jpg"),
+                                                duration: "40 seconds"
+                                            },
+                                            {
+                                                title: "Plank Knee Drive",
+                                                img: require("../../assets/plank-knee-drive.jpg"),
+                                                duration: "40 seconds"
                                             },
                                         ],
-                                    },
-                                    {
-                                        title: "Coffee",
-                                        contents: [
-                                            { title: "Flat white", inStock: true },
-                                            { title: "Latte", inStock: true },
-                                            { title: "Caffe Americano", inStock: true },
-                                        ],
-                                    },
+                                    }
                                 ],
                             })
                         }
@@ -95,21 +102,40 @@ export default function HomeScreen({ navigation }) {
                             navigation.navigate("Workout", {
                                 items: [
                                     {
-                                        title: "Burgers",
+                                        title: "Exercise",
                                         contents: [
-                                            { title: "Classic Burger", inStock: true },
-                                            { title: "Cheeseburger", inStock: true },
-                                            { title: "Bacon Burger", inStock: true },
+                                            {
+                                                title: "Donkey Kick",
+                                                img: require("../../assets/donkey-kick.jpg"),
+                                                duration: "2*40 seconds"
+                                            },
+                                            {
+                                                title: "Squat Jacks",
+                                                img: require("../../assets/squat-jacks.jpg"),
+                                                duration: "40 seconds"
+                                            },
+                                            {
+                                                title: "Standing Kickback",
+                                                img: require("../../assets/standing-kickback.jpg"),
+                                                duration: "40 seconds"
+                                            },
+                                            {
+                                                title: "Side-lying Leg Lifts",
+                                                img: require("../../assets/side-lying-leg-lifts.jpg"),
+                                                duration: "2*40 seconds"
+                                            },
+                                            {
+                                                title: "Frog Squat",
+                                                img: require("../../assets/frog-squat.jpg"),
+                                                duration: "40 seconds"
+                                            },
+                                            {
+                                                title: "Froggy Glute Lifts",
+                                                img: require("../../assets/froggy-glute-lifts.jpg"),
+                                                duration: "40 seconds"
+                                            },
                                         ],
-                                    },
-                                    {
-                                        title: "Drink",
-                                        contents: [
-                                            { title: "Coke", inStock: true },
-                                            { title: "Sprite", inStock: false },
-                                            { title: "Water", inStock: true },
-                                        ],
-                                    },
+                                    }
                                 ],
                             })
                         }
@@ -124,28 +150,38 @@ export default function HomeScreen({ navigation }) {
                             navigation.navigate("Workout", {
                                 items: [
                                     {
-                                        title: "Pizzas",
+                                        title: "Exercise",
                                         contents: [
-                                            { title: "Margherita", inStock: true },
-                                            { title: "Pepperoni", inStock: true },
-                                            { title: "BBQ Chicken", inStock: false },
-                                            { title: "Vegetarian", inStock: true },
-                                        ],
-                                    },
-                                    {
-                                        title: "Sides",
-                                        contents: [
-                                            { title: "Garlic Bread", inStock: true },
-                                            { title: "Mozzarella Sticks", inStock: true },
-                                            { title: "Wings", inStock: true },
-                                        ],
-                                    },
-                                    {
-                                        title: "Drinks",
-                                        contents: [
-                                            { title: "Lemonade", inStock: true },
-                                            { title: "Iced Tea", inStock: true },
-                                            { title: "Water", inStock: true },
+                                            {
+                                                title: "Narrow Bodyweight Squat",
+                                                img: require("../../assets/Overhead-Squat.jpg"),
+                                                duration: "40 seconds"
+                                            },
+                                            {
+                                                title: "Curtsy Squat",
+                                                img: require("../../assets/mountain-climbers.png"),
+                                                duration: "40 seconds"
+                                            },
+                                            {
+                                                title: "Jump Squats",
+                                                img: require("../../assets/jump-squats.jpg"),
+                                                duration: "40 seconds"
+                                            },
+                                            {
+                                                title: "Alternating Jump Lunges",
+                                                img: require("../../assets/alternating-jump-lunge.jpg"),
+                                                duration: "40 seconds"
+                                            },
+                                            {
+                                                title: "Squat with Punches",
+                                                img: require("../../assets/squat-with-punches.jpg"),
+                                                duration: "40 seconds"
+                                            },
+                                            {
+                                                title: "Curtsy Squat",
+                                                img: require("../../assets/curtsy-squat.jpg"),
+                                                duration: "40 seconds"
+                                            },
                                         ],
                                     },
                                 ],
@@ -162,28 +198,38 @@ export default function HomeScreen({ navigation }) {
                             navigation.navigate("Workout", {
                                 items: [
                                     {
-                                        title: "Pizzas",
+                                        title: "Exercise",
                                         contents: [
-                                            { title: "Margherita", inStock: true },
-                                            { title: "Pepperoni", inStock: true },
-                                            { title: "BBQ Chicken", inStock: false },
-                                            { title: "Vegetarian", inStock: true },
-                                        ],
-                                    },
-                                    {
-                                        title: "Sides",
-                                        contents: [
-                                            { title: "Garlic Bread", inStock: true },
-                                            { title: "Mozzarella Sticks", inStock: true },
-                                            { title: "Wings", inStock: true },
-                                        ],
-                                    },
-                                    {
-                                        title: "Drinks",
-                                        contents: [
-                                            { title: "Lemonade", inStock: true },
-                                            { title: "Iced Tea", inStock: true },
-                                            { title: "Water", inStock: true },
+                                            {
+                                                title: "Bodyweight Overhead Squats",
+                                                img: require("../../assets/Narrow-Squat.jpg"),
+                                                duration: "40 seconds"
+                                            },
+                                            {
+                                                title: "Curtsy Squat",
+                                                img: require("../../assets/curtsy-squat.jpg"),
+                                                duration: "40 seconds"
+                                            },
+                                            {
+                                                title: "Squat Side kicks",
+                                                img: require("../../assets/squat-side-kicks.jpg"),
+                                                duration: "40 seconds"
+                                            },
+                                            {
+                                                title: "Frog Squat",
+                                                img: require("../../assets/frog-squat.jpg"),
+                                                duration: "40 seconds"
+                                            },
+                                            {
+                                                title: "Squat Pulse",
+                                                img: require("../../assets/squat-pulse.jpg"),
+                                                duration: "40 seconds"
+                                            },
+                                            {
+                                                title: "In-out Jump Squat",
+                                                img: require("../../assets/in-out-jump-squat.jpg"),
+                                                duration: "40 seconds"
+                                            },
                                         ],
                                     },
                                 ],
