@@ -9,20 +9,20 @@ export default function App() {
     return (
         <Stack.Navigator>
             <Stack.Screen
-                name="Challenge"
+                name="Challenges"
                 component={HomeScreen}
                 options={{
-                    title: "Challenge",
+                    title: "Challenges",
                     headerStyle: { backgroundColor: "#ff6347" }, // Tomato header background
                     headerTintColor: "#fff", // White header text
                     headerTitleStyle: { fontWeight: "bold", fontSize: 22 },
                 }}
             />
             <Stack.Screen
-                name="Menu"
+                name="Challenge"
                 component={DetailsScreen}
                 options={{
-                    title: "Menu",
+                    title: "Challenge",
                     headerStyle: { backgroundColor: "#ff6347" },
                     headerTintColor: "#fff",
                     headerTitleStyle: { fontWeight: "bold", fontSize: 22 },

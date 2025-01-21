@@ -51,36 +51,18 @@ export default function HomeScreen({ navigation }) {
                         eta="30"
                         imgUri={require("../../assets/squats2.jpg")}
                         action={() =>
-                            navigation.navigate("Menu", {
+                            navigation.navigate("Challenge", {
                                 items: [
                                     {
-                                        title: "Gelato",
+                                        title: "Exercise",
                                         contents: [
                                             {
-                                                title: "Vanilla",
-                                                img: require("../../assets/vanilla.jpg"),
-                                                inStock: true,
-                                            },
-                                            {
-                                                title: "Chocolate (Disabled)",
-                                                img: require("../../assets/chocolate.jpg"),
-                                                inStock: false,
-                                            },
-                                            {
-                                                title: "Mint",
-                                                img: require("../../assets/mint.jpg"),
-                                                inStock: true,
-                                            },
+                                                title: "Squats",
+                                                img: require("../../assets/squats.jpg"),
+                                                duration: "40 seconds",
+                                            }
                                         ],
-                                    },
-                                    {
-                                        title: "Coffee",
-                                        contents: [
-                                            { title: "Flat white", inStock: true },
-                                            { title: "Latte", inStock: true },
-                                            { title: "Caffe Americano", inStock: true },
-                                        ],
-                                    },
+                                    }
                                 ],
                             })
                         }
@@ -92,24 +74,17 @@ export default function HomeScreen({ navigation }) {
                         eta="30"
                         imgUri={require("../../assets/push-ups2.jpg")}
                         action={() =>
-                            navigation.navigate("Menu", {
+                            navigation.navigate("Challenge", {
                                 items: [
                                     {
-                                        title: "Burgers",
+                                        title: "Exercise",
                                         contents: [
-                                            { title: "Classic Burger", inStock: true },
-                                            { title: "Cheeseburger", inStock: true },
-                                            { title: "Bacon Burger", inStock: true },
+                                            {                                                
+                                                title: "Push-ups",
+                                                img: require("../../assets/push-ups.jpg"),
+                                                duration: "60 seconds",},
                                         ],
-                                    },
-                                    {
-                                        title: "Drink",
-                                        contents: [
-                                            { title: "Coke", inStock: true },
-                                            { title: "Sprite", inStock: false },
-                                            { title: "Water", inStock: true },
-                                        ],
-                                    },
+                                    }
                                 ],
                             })
                         }
@@ -121,31 +96,15 @@ export default function HomeScreen({ navigation }) {
                         eta="30"
                         imgUri={require("../../assets/crunches2.jpg")}
                         action={() =>
-                            navigation.navigate("Menu", {
+                            navigation.navigate("Challenge", {
                                 items: [
                                     {
-                                        title: "Pizzas",
+                                        title: "Exercise",
                                         contents: [
-                                            { title: "Margherita", inStock: true },
-                                            { title: "Pepperoni", inStock: true },
-                                            { title: "BBQ Chicken", inStock: false },
-                                            { title: "Vegetarian", inStock: true },
-                                        ],
-                                    },
-                                    {
-                                        title: "Sides",
-                                        contents: [
-                                            { title: "Garlic Bread", inStock: true },
-                                            { title: "Mozzarella Sticks", inStock: true },
-                                            { title: "Wings", inStock: true },
-                                        ],
-                                    },
-                                    {
-                                        title: "Drinks",
-                                        contents: [
-                                            { title: "Lemonade", inStock: true },
-                                            { title: "Iced Tea", inStock: true },
-                                            { title: "Water", inStock: true },
+                                            {                                                
+                                                title: "Crunches",
+                                                img: require("../../assets/crunches.png"),
+                                                duration: "60 seconds",},
                                         ],
                                     },
                                 ],
@@ -159,33 +118,17 @@ export default function HomeScreen({ navigation }) {
                         eta="30"
                         imgUri={require("../../assets/pull-ups2.jpg")}
                         action={() =>
-                            navigation.navigate("Menu", {
+                            navigation.navigate("Challenge", {
                                 items: [
                                     {
-                                        title: "Pizzas",
+                                        title: "Exercise",
                                         contents: [
-                                            { title: "Margherita", inStock: true },
-                                            { title: "Pepperoni", inStock: true },
-                                            { title: "BBQ Chicken", inStock: false },
-                                            { title: "Vegetarian", inStock: true },
+                                            {                                                
+                                                title: "Pull-ups",
+                                                img: require("../../assets/pull-ups.jpg"),
+                                                duration: "60 seconds",},
                                         ],
-                                    },
-                                    {
-                                        title: "Sides",
-                                        contents: [
-                                            { title: "Garlic Bread", inStock: true },
-                                            { title: "Mozzarella Sticks", inStock: true },
-                                            { title: "Wings", inStock: true },
-                                        ],
-                                    },
-                                    {
-                                        title: "Drinks",
-                                        contents: [
-                                            { title: "Lemonade", inStock: true },
-                                            { title: "Iced Tea", inStock: true },
-                                            { title: "Water", inStock: true },
-                                        ],
-                                    },
+                                    }
                                 ],
                             })
                         }
