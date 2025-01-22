@@ -23,15 +23,6 @@ export default function RecordsScreen({ route, navigation }) {
         };
     }, [navigation]);
 
-    const [title, setTitle] = React.useState("");
-    const [img, setImg] = React.useState(null);
-
-    useEffect(() => {
-        const challenge = route.params.challenge;
-        setTitle(challenge?.title || "");
-        setImg(challenge?.img || null);
-    }, []);
-
     const handlerClearChallengePopup = () => {
         Alert.alert("Reset", "Are you sure you want to reset your progress for this challenge?", [
             {
@@ -44,34 +35,38 @@ export default function RecordsScreen({ route, navigation }) {
     };
 
     const handlerClearChallenge = async () => {
-        // await helper.clearAllData();
-        // return;
-        const challenge = route.params.challenge;
-        const settings = await helper.getGlobalSettings();
-        const index = settings.challenges.findIndex((c) => c.id === challenge.id);
-        settings.challenges[index].progress = Array.from(
-            { length: settings.challenges[index].progress.length },
-            (_, i) => false
-        );
-        await helper.saveGlobalSettings({ ...settings });
-        fetchDays();
+        await helper.clearAllData();
+        return;
+        // const challengeId = route.params.challengeId;
+        // const settings = await helper.getChallengeSettings();
+        // const index = settings.challenges.findIndex((c) => c.id === challengeId);
+        // settings.challenges[index].progress = Array.from(
+        //     { length: settings.challenges[index].progress.length },
+        //     (_, i) => false
+        // );
+        // await helper.saveChallengeSettings({ ...settings });
+        // fetchData();
     };
 
+    const [title, setTitle] = React.useState("");
+    const [img, setImg] = React.useState(null);
     const [days, setDays] = React.useState([]);
     const [groupDays, setGroupDays] = React.useState([]);
     const [currentDay, setCurrentDay] = React.useState(null);
 
     useEffect(() => {
-        fetchDays();
+        fetchData();
     }, []);
 
-    const fetchDays = async () => {
-        const challenge = route.params.challenge;
-        const settings = await helper.getGlobalSettings();
-        const index = settings.challenges.findIndex((c) => c.id === challenge.id);
-        const current = settings.challenges[index];
-        setCurrentDay(current.progress.findIndex((d) => !d));
-        setDays(current.progress);
+    const fetchData = async () => {
+        const challengeId = route.params.challengeId;
+        const settings = await helper.getChallengeSettings();
+        const index = settings.challenges.findIndex((c) => c.id === challengeId);
+        const challenge = settings.challenges[index];
+        setTitle(challenge?.title || "");
+        setImg(challenge?.img || null);
+        setCurrentDay(challenge.progress.findIndex((d) => !d));
+        setDays(challenge?.progress);
     };
 
     const numColumns = 7;
@@ -89,22 +84,22 @@ export default function RecordsScreen({ route, navigation }) {
     }, [days]);
 
     const handleStartDay = async () => {
-        // const challenge = route.params.challenge;
-        // const settings = await helper.getGlobalSettings();
-        // const index = settings.challenges.findIndex((c) => c.id === challenge.id);
-        // const current = settings.challenges[index];
-        // for (let i = 0; i < current.progress.length; i++) {
-        //     if (!current.progress[i]) {
-        //         current.progress[i] = true;
+        // const challengeId = route.params.challengeId;
+        // const settings = await helper.getChallengeSettings();
+        // const index = settings.challenges.findIndex((c) => c.id === challengeId);
+        // const challenge = settings.challenges[index];
+        // for (let i = 0; i < challenge.progress.length; i++) {
+        //     if (!challenge.progress[i]) {
+        //         challenge.progress[i] = true;
         //         break;
         //     }
         // }
-        // settings.challenges[index] = current;
-        // await helper.saveGlobalSettings({ ...settings });
-        // setCurrentDay(current.progress.findIndex((d) => !d));
-        // setDays(current.progress);
+        // settings.challenges[index] = challenge;
+        // await helper.saveChallengeSettings({ ...settings });
+        // setCurrentDay(challenge.progress.findIndex((d) => !d));
+        // setDays(challenge.progress);
         navigation.navigate("details", {
-            challenge: route.params.challenge,
+            challengeId: route.params.challengeId,
             currentDay: currentDay,
         });
     };

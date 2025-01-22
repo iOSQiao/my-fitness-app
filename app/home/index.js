@@ -12,7 +12,7 @@ export default function HomeScreen() {
 
     const handleClickeChallenge = (item) => {
         navigation.navigate("records", {
-            challenge: item,
+            challengeId: item.id,
         });
     }
 

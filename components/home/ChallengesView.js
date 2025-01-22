@@ -10,7 +10,7 @@ export default function ChallengesView({ onPress }) {
     const [items, setItems] = React.useState([]);
 
     useEffect(() => {
-        helper.getGlobalSettings().then((settings) => {
+        helper.getChallengeSettings().then((settings) => {
             setItems(settings.challenges);
         });
     }, []);

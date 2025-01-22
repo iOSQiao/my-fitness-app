@@ -12,7 +12,7 @@ const defaultConfig = {
             duration: "30 days",
             exercises: [
                 {
-                    name: "Squats",
+                    name: "Squat",
                     img: require("../assets/squats.jpg"),
                     duration: 40,
                 },
@@ -52,13 +52,13 @@ function isString(value) {
 }
 
 // 初始化全局变量
-export const initGlobalSettings = async () => {
+export const initChallengeSettings = async () => {
     try {
         const jsonValue = await AsyncStorage.getItem(CacheDataName);
         if (jsonValue == null) {
-            await saveGlobalSettings(defaultConfig);
+            await saveChallengeSettings(defaultConfig);
         } else {
-            await saveGlobalSettings(jsonValue);
+            await saveChallengeSettings(jsonValue);
         }
     } catch (e) {
         console.error(e);
@@ -67,7 +67,7 @@ export const initGlobalSettings = async () => {
 };
 
 // 存储全局变量
-export const saveGlobalSettings = async (settings) => {
+export const saveChallengeSettings = async (settings) => {
     try {
         let jsonValue = settings;
         if (!isString(settings)) {
@@ -81,7 +81,7 @@ export const saveGlobalSettings = async (settings) => {
 };
 
 // 读取全局变量
-export const getGlobalSettings = async () => {
+export const getChallengeSettings = async () => {
     try {
         const jsonValue = await AsyncStorage.getItem(CacheDataName);
         if (!isString(jsonValue)) {
@@ -91,6 +91,7 @@ export const getGlobalSettings = async () => {
     } catch (e) {
         console.error(e);
     }
+    return null;
 };
 
 // 清除所有数据
@@ -98,7 +99,7 @@ export const clearAllData = async () => {
     try {
         await AsyncStorage.clear();
         console.log("All data cleared");
-        await initGlobalSettings();
+        await initChallengeSettings();
     } catch (e) {
         console.error("Error clearing data:", e);
     }

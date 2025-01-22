@@ -3,6 +3,7 @@ import { View, Text, ScrollView, StyleSheet, Image, SafeAreaView } from "react-n
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 import LevelView from "../../components/home/LevelView";
+import * as helper from "../../utils/challengeDataHelper";
 
 export default function DetailsScreen({ route, navigation }) {
     React.useLayoutEffect(() => {
@@ -13,26 +14,46 @@ export default function DetailsScreen({ route, navigation }) {
 
     const [title, setTitle] = React.useState("");
     const [img, setImg] = React.useState(null);
+    const [level, setLevel] = useState(1);
+    const [exercises, setExercises] = useState([]);
 
     useEffect(() => {
-        const challenge = route.params.challenge;
-        setTitle(challenge?.title || "");
-        setImg(challenge?.img || null);
+        fetchData();
     }, []);
 
-    const handleStart = () => {
-        // TODO
-        navigation.navigate("end", {
-            challenge: route.params.challenge,
-            currentDay: route.params.currentDay,
-        });
+    const fetchData = async () => {
+        const challengeId = route.params.challengeId;
+        const settings = await helper.getChallengeSettings();
+        const index = settings.challenges.findIndex((c) => c.id === challengeId);
+        const challenge = settings.challenges[index];
+        setTitle(challenge?.title || "");
+        setImg(challenge?.img || null);
+        setExercises(challenge?.exercises || []);
     };
-
-    const [level, setLevel] = useState(1);
 
     const handleChangeLevel = (level) => {
         setLevel(level);
     };
+
+    const handleStart = () => {
+        // TODO
+        navigation.navigate("end", {
+            challengeId: route.params.challengeId,
+            currentDay: route.params.currentDay,
+        });
+    };
+
+    const renderExercises = useMemo(() => {
+        return exercises.map((exercise, index) => (
+            <View key={index} style={styles.exerciseCell}>
+                <Image source={exercise.img} style={styles.exerciseImg} />
+                <View>
+                    <Text style={styles.exerciseName}>{exercise.name}</Text>
+                    <Text style={styles.exerciseDuration}>{exercise.duration} seconds</Text>
+                </View>
+            </View>
+        ));
+    }, [exercises]);
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -45,6 +66,9 @@ export default function DetailsScreen({ route, navigation }) {
                         </View>
                         <View style={styles.main}>
                             <LevelView level={level} onChange={handleChangeLevel} />
+                            <Text style={styles.exercisesTitle}>Exercises</Text>
+                            <View style={styles.divide}></View>
+                            {renderExercises}
                         </View>
                     </ScrollView>
                 </View>
@@ -88,9 +112,6 @@ const styles = StyleSheet.create({
         padding: 10,
         textAlign: "center",
     },
-    main: {
-        minHeight: 500,
-    },
     startBtnContainer: {
         width: "100%",
         height: 85,
@@ -109,5 +130,53 @@ const styles = StyleSheet.create({
         lineHeight: 55,
         fontWeight: "bold",
         textAlign: "center",
+    },
+    main: {
+        minHeight: 500,
+    },
+    exercisesTitle: {
+        color: "#000",
+        fontSize: 16,
+        fontWeight: "bold",
+        lineHeight: 16,
+        textAlign: "center",
+        width: "100%",
+        marginTop: 30,
+    },
+    divide: {
+        width: "100%",
+        height: 1,
+        backgroundColor: "lightgray",
+        marginTop: 15,
+        marginBottom: 20,
+    },
+    exerciseCell: {
+        width: "100%",
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        paddingLeft: 20,
+        paddingRight: 20,
+        paddingBottom: 20,
+    },
+    exerciseImg: {
+        width: 120,
+        height: 80,
+        resizeMode: "cover",
+    },
+    exerciseName: {
+        color: "#000",
+        fontSize: 16,
+        fontWeight: "bold",
+        lineHeight: 16,
+        marginLeft: 10,
+    },
+    exerciseDuration: {
+        color: "gray",
+        fontSize: 14,
+        fontWeight: "normal",
+        lineHeight: 14,
+        marginLeft: 10,
+        marginTop: 5,
     },
 });

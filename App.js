@@ -18,7 +18,7 @@ const CustomTabBarIcon = ({ source, color, size }) => {
 
 export default function App() {
     useEffect(() => {
-        helper.initGlobalSettings();
+        helper.initChallengeSettings();
     }, []);
 
     return (
