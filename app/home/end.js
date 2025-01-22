@@ -3,6 +3,8 @@ import { View, Text, ScrollView, StyleSheet, Image } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import * as helper from "../../utils/challengeDataHelper";
+
 export default function EndScreen({ route, navigation }) {
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -19,10 +21,17 @@ export default function EndScreen({ route, navigation }) {
     const [img, setImg] = React.useState(null);
 
     useEffect(() => {
-        const challenge = route.params.challenge;
+        fetchData();
+    }, []);
+
+    const fetchData = async () => {
+        const challengeId = route.params.challengeId;
+        const settings = await helper.getChallengeSettings();
+        const index = settings.challenges.findIndex((c) => c.id === challengeId);
+        const challenge = settings.challenges[index];
         setTitle(challenge?.title || "");
         setImg(challenge?.img || null);
-    }, []);
+    };
 
     const handleContinue = () => {};
 
