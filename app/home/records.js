@@ -6,7 +6,17 @@ import { Ionicons } from "@expo/vector-icons";
 import * as helper from "../../utils/challengeDataHelper";
 
 export default function RecordsScreen({ route, navigation }) {
-    useEffect(() => {
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <TouchableOpacity onPress={handlerClearChallengePopup} style={{ marginRight: 10 }}>
+                    <Ionicons name="refresh" size={24} color="#000" />
+                </TouchableOpacity>
+            ),
+        });
+    }, [navigation]);
+
+    React.useLayoutEffect(() => {
         navigation.getParent()?.setOptions({ tabBarStyle: { display: "none" } });
         return () => {
             navigation.getParent()?.setOptions({ tabBarStyle: { display: "flex" } });
@@ -18,19 +28,9 @@ export default function RecordsScreen({ route, navigation }) {
 
     useEffect(() => {
         const challenge = route.params.challenge;
-        setTitle(challenge?.title || "Records");
+        setTitle(challenge?.title || "");
         setSource(challenge?.uri || null);
     }, []);
-
-    React.useLayoutEffect(() => {
-        navigation.setOptions({
-            headerRight: () => (
-                <TouchableOpacity onPress={handlerClearChallengePopup} style={{ marginRight: 10 }}>
-                    <Ionicons name="refresh" size={24} color="#000" />
-                </TouchableOpacity>
-            ),
-        });
-    }, [navigation]);
 
     const handlerClearChallengePopup = () => {
         Alert.alert("Reset", "Are you sure you want to reset your progress for this challenge?", [
@@ -87,20 +87,24 @@ export default function RecordsScreen({ route, navigation }) {
     }, [days]);
 
     const handleStartDay = async () => {
-        const challenge = route.params.challenge;
-        const settings = await helper.getGlobalSettings();
-        const index = settings.challenges.findIndex((c) => c.id === challenge.id);
-        const current = settings.challenges[index];
-        for (let i = 0; i < current.progress.length; i++) {
-            if (!current.progress[i]) {
-                current.progress[i] = true;
-                break;
-            }
-        }
-        settings.challenges[index] = current;
-        await helper.saveGlobalSettings({ ...settings });
-        setCurrentDay(current.progress.findIndex((d) => !d));
-        setDays(current.progress);
+        // const challenge = route.params.challenge;
+        // const settings = await helper.getGlobalSettings();
+        // const index = settings.challenges.findIndex((c) => c.id === challenge.id);
+        // const current = settings.challenges[index];
+        // for (let i = 0; i < current.progress.length; i++) {
+        //     if (!current.progress[i]) {
+        //         current.progress[i] = true;
+        //         break;
+        //     }
+        // }
+        // settings.challenges[index] = current;
+        // await helper.saveGlobalSettings({ ...settings });
+        // setCurrentDay(current.progress.findIndex((d) => !d));
+        // setDays(current.progress);
+        navigation.navigate("details", {
+            challenge: route.params.challenge,
+            currentDay: currentDay,
+        });
     };
 
     return (
@@ -108,7 +112,7 @@ export default function RecordsScreen({ route, navigation }) {
             <View style={styles.container}>
                 <View style={styles.scrollViewContainer}>
                     <ScrollView>
-                        <View style={styles.content}>
+                        <View style={styles.header}>
                             <Image source={source} style={styles.bg} />
                             <View style={styles.progressContainer}>
                                 <View style={styles.progressTop}>
@@ -202,7 +206,9 @@ export default function RecordsScreen({ route, navigation }) {
                 <View style={styles.startBtnContainer}>
                     <View style={styles.startBtn}>
                         <TouchableOpacity onPress={handleStartDay}>
-                            <Text style={styles.startLabel}>START DAY 5</Text>
+                            <Text style={styles.startLabel}>
+                                START DAY {currentDay === -1 ? "" : currentDay + 1}
+                            </Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -219,7 +225,7 @@ const styles = StyleSheet.create({
     scrollViewContainer: {
         flex: 1,
     },
-    content: {
+    header: {
         backgroundColor: "#000",
         width: "100%",
         minHeight: 200,

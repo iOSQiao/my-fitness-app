@@ -19,15 +19,27 @@ export default function Home() {
                 headerStyle: { backgroundColor: "#fff" },
                 headerShadowVisible: false,
             }}>
-            <Stack.Screen name="home" component={HomeScreen} options={{ title: "" }} />
+            <Stack.Screen
+                name="home"
+                component={HomeScreen}
+                options={{ title: "", headerBackTitle: "" }}
+            />
             <Stack.Screen
                 name="records"
                 component={RecordsScreen}
-                options={{ title: "Challenge" }}
+                options={{ title: "Challenge", headerBackTitle: "" }}
             />
-            <Stack.Screen name="details" component={DetailsScreen} options={{ title: "" }} />
+            <Stack.Screen
+                name="details"
+                component={DetailsScreen}
+                options={{ title: "", headerBackTitle: "" }}
+            />
             <Stack.Screen name="begin" component={BeginScreen} options={{ title: "" }} />
-            <Stack.Screen name="end" component={EndScreen} options={{ title: "" }} />
+            <Stack.Screen
+                name="end"
+                component={EndScreen}
+                options={{ title: "", headerBackTitle: "" }}
+            />
         </Stack.Navigator>
     );
 }
