@@ -2,14 +2,13 @@ import React, { useEffect } from "react";
 import { Image } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Ionicons from "@expo/vector-icons/Ionicons";
 
 import HomeLayout from "./app/home/_layout";
 import ChallengeLayout from "./app/challenge/_layout";
 import WorkoutsScreen from "./app/workouts/_layout";
 import ExercisesLayout from "./app/exercises/_layout";
 
-import * as helper from "./utils/globalHelper";
+import * as helper from "./utils/challengeDataHelper";
 
 const Tab = createBottomTabNavigator();
 

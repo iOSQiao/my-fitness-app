@@ -3,8 +3,7 @@ import { View, Text, ScrollView, StyleSheet, Image } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 
-import { Challenge } from "../../utils/constants";
-import * as helper from "../../utils/globalHelper";
+import * as helper from "../../utils/challengeDataHelper";
 
 export default function RecordsScreen({ route, navigation }) {
     const [title, setTitle] = React.useState("");
@@ -33,6 +32,7 @@ export default function RecordsScreen({ route, navigation }) {
 
     const [days, setDays] = React.useState([]);
     const [groupDays, setGroupDays] = React.useState([]);
+    const [currentDay, setCurrentDay] = React.useState(null);
 
     useEffect(() => {
         fetchDays();
@@ -43,6 +43,7 @@ export default function RecordsScreen({ route, navigation }) {
         const settings = await helper.getGlobalSettings();
         const index = settings.challenges.findIndex((c) => c.id === challenge.id);
         const current = settings.challenges[index];
+        setCurrentDay(current.progress.findIndex((d) => !d));
         setDays(current.progress);
     };
 
@@ -73,6 +74,7 @@ export default function RecordsScreen({ route, navigation }) {
         }
         settings.challenges[index] = current;
         await helper.saveGlobalSettings({ ...settings });
+        setCurrentDay(current.progress.findIndex((d) => !d));
         setDays(current.progress);
     };
 
@@ -84,12 +86,25 @@ export default function RecordsScreen({ route, navigation }) {
                         <Image source={source} style={styles.bg} />
                         <View style={styles.progressContainer}>
                             <View style={styles.progressTop}>
-                                <Text style={styles.left}>26 days left</Text>
-                                <Text style={styles.right}>13%</Text>
+                                <Text style={styles.left}>
+                                    {`${
+                                        currentDay === -1 ? 0 : days.length - currentDay
+                                    } days left`}
+                                </Text>
+                                <Text style={styles.right}>
+                                    {currentDay === -1
+                                        ? 100
+                                        : parseInt((currentDay / days.length) * 100)}
+                                    %
+                                </Text>
                             </View>
                             <View style={styles.progress}>
                                 <View style={styles.total}></View>
-                                <View style={styles.rest}></View>
+                                <View
+                                    style={[
+                                        styles.rest,
+                                        { width: `${parseInt((currentDay / days.length) * 100)}%` },
+                                    ]}></View>
                             </View>
                         </View>
                         <Text style={styles.title}>{title}</Text>
@@ -107,20 +122,26 @@ export default function RecordsScreen({ route, navigation }) {
                                                     style={[styles.dayBox, { opacity: 0 }]}></View>
                                             );
                                         }
-                                        if (!!day) {
+                                        if (groupIndex * numColumns + index === currentDay) {
                                             return (
-                                                <View
-                                                    key={index}
-                                                    style={[
-                                                        styles.dayBox,
-                                                        {
-                                                            borderRightWidth: 0,
-                                                            backgroundColor: "#7e759d",
-                                                        },
-                                                    ]}>
-                                                    <Text style={styles.dayLabel}>
+                                                <View key={index} style={styles.dayBoxActive}>
+                                                    <Text style={styles.dayLabelActive}>
                                                         {groupIndex * numColumns + index + 1}
                                                     </Text>
+                                                </View>
+                                            );
+                                        }
+                                        if (!!day) {
+                                            return (
+                                                <View key={index} style={styles.dayBox}>
+                                                    <Text style={styles.dayLabelSuccess}>
+                                                        {groupIndex * numColumns + index + 1}
+                                                    </Text>
+                                                    <Ionicons
+                                                        name="checkmark"
+                                                        size={36}
+                                                        color="#000"
+                                                    />
                                                 </View>
                                             );
                                         }
@@ -204,7 +225,7 @@ const styles = StyleSheet.create({
         margin: 5,
     },
     rest: {
-        width: "13%",
+        width: "0%",
         height: "100%",
         backgroundColor: "#7e759d",
         borderTopLeftRadius: 15,
@@ -266,12 +287,39 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderRightWidth: 1,
         borderColor: "lightgray",
+        backgroundColor: "#fff",
     },
     dayLabel: {
         color: "#000",
         fontSize: 16,
         fontWeight: "bold",
         lineHeight: 16,
+    },
+    dayBoxActive: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        height: 50,
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        borderRightWidth: 1,
+        borderColor: "lightgray",
+        backgroundColor: "#4f3f84",
+    },
+    dayLabelActive: {
+        color: "#fff",
+        fontSize: 16,
+        fontWeight: "bold",
+        lineHeight: 16,
+    },
+    dayLabelSuccess: {
+        color: "lightgray",
+        fontSize: 12,
+        fontWeight: "normal",
+        lineHeight: 12,
+        position: "absolute",
+        top: 5,
+        left: 5,
     },
     startBtnContainer: {
         width: "100%",

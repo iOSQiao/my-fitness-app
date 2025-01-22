@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { ScrollView, View, Image, Text, StyleSheet, Dimensions } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-import * as helper from "../../utils/globalHelper";
+import * as helper from "../../utils/challengeDataHelper";
 
 const { width } = Dimensions.get("window");
 
