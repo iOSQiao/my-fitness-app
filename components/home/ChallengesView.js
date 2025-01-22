@@ -1,54 +1,32 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ScrollView, View, Image, Text, StyleSheet, Dimensions } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-import { Challenge } from "../../utils/constants";
+import * as helper from "../../utils/globalHelper";
 
 const { width } = Dimensions.get("window");
 
 export default function ChallengesView({ onPress }) {
-    const items = [
-        {
-            id: Challenge.Squat.id,
-            name: Challenge.Squat.name,
-            uri: require("../../assets/images/home/challenge_1.jpg"),
-            title: "The squats challenge",
-            desc: "30 days",
-        },
-        {
-            id: Challenge.Pushup.id,
-            name: Challenge.Pushup.name,
-            uri: require("../../assets/images/home/challenge_2.jpg"),
-            title: "The push-ups challenge",
-            desc: "30 days",
-        },
-        {
-            id: Challenge.Crunch.id,
-            name: Challenge.Crunch.name,
-            uri: require("../../assets/images/home/challenge_3.jpg"),
-            title: "The crunch challenge",
-            desc: "30 days",
-        },
-        {
-            id: Challenge.Pullup.id,
-            name: Challenge.Pullup.name,
-            uri: require("../../assets/images/home/challenge_4.jpg"),
-            title: "The pull-ups challenge",
-            desc: "30 days",
-        },
-    ];
+    const [items, setItems] = React.useState([]);
+
+    useEffect(() => {
+        helper.getGlobalSettings().then((settings) => {
+            setItems(settings.challenges);
+        });
+    }, []);
 
     return (
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            {items.map((item, index) => (
-                <TouchableOpacity key={index} onPress={() => onPress && onPress(item)}>
-                    <View style={styles.container}>
-                        <Image source={item.uri} style={styles.image} />
-                        <Text style={styles.title}>{item.title}</Text>
-                        <Text style={styles.desc}>{item.desc}</Text>
-                    </View>
-                </TouchableOpacity>
-            ))}
+            {items &&
+                items.map((item, index) => (
+                    <TouchableOpacity key={index} onPress={() => onPress && onPress(item)}>
+                        <View style={styles.container}>
+                            <Image source={item.uri} style={styles.image} />
+                            <Text style={styles.title}>{item.title}</Text>
+                            <Text style={styles.desc}>{item.desc}</Text>
+                        </View>
+                    </TouchableOpacity>
+                ))}
         </ScrollView>
     );
 }

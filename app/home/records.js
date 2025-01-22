@@ -2,10 +2,9 @@ import React, { useEffect, useMemo } from "react";
 import { View, Text, ScrollView, StyleSheet, Image } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
-import dayjs from "dayjs";
-import axios from "axios";
 
 import { Challenge } from "../../utils/constants";
+import * as helper from "../../utils/globalHelper";
 
 export default function RecordsScreen({ route, navigation }) {
     const [title, setTitle] = React.useState("");
@@ -20,9 +19,7 @@ export default function RecordsScreen({ route, navigation }) {
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <TouchableOpacity
-                    onPress={() => console.log("Refresh pressed")}
-                    style={{ marginRight: 10 }}>
+                <TouchableOpacity onPress={() => helper.clearAllData()} style={{ marginRight: 10 }}>
                     <Ionicons name="refresh" size={24} color="#000" />
                 </TouchableOpacity>
             ),
@@ -31,11 +28,6 @@ export default function RecordsScreen({ route, navigation }) {
 
     const [days, setDays] = React.useState([]);
     const [groupDays, setGroupDays] = React.useState([]);
-
-    // useEffect(() => {
-    //     const today = dayjs();
-    //     setDays(Array.from({ length: today.daysInMonth() }, (_, i) => i + 1));
-    // }, []);
 
     useEffect(() => {
         setDays(Array.from({ length: 30 }, (_, i) => i + 1));
@@ -55,9 +47,20 @@ export default function RecordsScreen({ route, navigation }) {
         setGroupDays(result);
     }, [days]);
 
-    const handleStartDay = () => {
-        
-    }
+    const handleStartDay = async () => {
+        const challenge = route.params.challenge;
+        const settings = await helper.getGlobalSettings();
+        const index = settings.challenges.findIndex((c) => c.id === challenge.id);
+        const current = settings.challenges[index];
+        for (let i = 0; i < current.progress.length; i++) {
+            if (!current.progress[i]) {
+                current.progress[i] = true;
+                break;
+            }
+        }
+        settings.challenges[index] = current;
+        await helper.saveGlobalSettings({ ...settings });
+    };
 
     return (
         <View style={styles.container}>
@@ -111,7 +114,7 @@ export default function RecordsScreen({ route, navigation }) {
             </View>
             <View style={styles.startBtnContainer}>
                 <View style={styles.startBtn}>
-                    <TouchableOpacity onPress={() => console.log("Start pressed")}>
+                    <TouchableOpacity onPress={handleStartDay}>
                         <Text style={styles.startLabel}>START DAY 5</Text>
                     </TouchableOpacity>
                 </View>
@@ -240,23 +243,20 @@ const styles = StyleSheet.create({
     startBtnContainer: {
         width: "100%",
         height: 85,
-        justifyContent: "center",
-        alignItems: "center",
         backgroundColor: "#fff",
         flexDirection: "row",
     },
     startBtn: {
         flex: 1,
-        backgroundColor: "#4f3f82",
         height: 55,
         margin: 15,
-        justifyContent: "center",
-        alignItems: "center",
+        backgroundColor: "#4f3f82",
     },
     startLabel: {
         color: "#fff",
         fontSize: 18,
-        lineHeight: 18,
+        lineHeight: 55,
         fontWeight: "bold",
+        textAlign: "center",
     },
 });
