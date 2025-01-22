@@ -18,17 +18,24 @@ export default function RecordsScreen({ route, navigation }) {
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <TouchableOpacity
-                    onPress={async () => {
-                        await helper.clearAllData();
-                        fetchDays();
-                    }}
-                    style={{ marginRight: 10 }}>
+                <TouchableOpacity onPress={handlerClearChallenge} style={{ marginRight: 10 }}>
                     <Ionicons name="refresh" size={24} color="#000" />
                 </TouchableOpacity>
             ),
         });
     }, [navigation]);
+
+    const handlerClearChallenge = async () => {
+        const challenge = route.params.challenge;
+        const settings = await helper.getGlobalSettings();
+        const index = settings.challenges.findIndex((c) => c.id === challenge.id);
+        settings.challenges[index].progress = Array.from(
+            { length: settings.challenges[index].progress.length },
+            (_, i) => false
+        );
+        await helper.saveGlobalSettings({ ...settings });
+        fetchDays();
+    };
 
     const [days, setDays] = React.useState([]);
     const [groupDays, setGroupDays] = React.useState([]);
