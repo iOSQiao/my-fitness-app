@@ -19,7 +19,12 @@ export default function RecordsScreen({ route, navigation }) {
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <TouchableOpacity onPress={() => helper.clearAllData()} style={{ marginRight: 10 }}>
+                <TouchableOpacity
+                    onPress={async () => {
+                        await helper.clearAllData();
+                        fetchDays();
+                    }}
+                    style={{ marginRight: 10 }}>
                     <Ionicons name="refresh" size={24} color="#000" />
                 </TouchableOpacity>
             ),
@@ -30,8 +35,16 @@ export default function RecordsScreen({ route, navigation }) {
     const [groupDays, setGroupDays] = React.useState([]);
 
     useEffect(() => {
-        setDays(Array.from({ length: 30 }, (_, i) => i + 1));
+        fetchDays();
     }, []);
+
+    const fetchDays = async () => {
+        const challenge = route.params.challenge;
+        const settings = await helper.getGlobalSettings();
+        const index = settings.challenges.findIndex((c) => c.id === challenge.id);
+        const current = settings.challenges[index];
+        setDays(current.progress);
+    };
 
     const numColumns = 7;
 
@@ -60,6 +73,7 @@ export default function RecordsScreen({ route, navigation }) {
         }
         settings.challenges[index] = current;
         await helper.saveGlobalSettings({ ...settings });
+        setDays(current.progress);
     };
 
     return (
@@ -93,6 +107,23 @@ export default function RecordsScreen({ route, navigation }) {
                                                     style={[styles.dayBox, { opacity: 0 }]}></View>
                                             );
                                         }
+                                        if (!!day) {
+                                            return (
+                                                <View
+                                                    key={index}
+                                                    style={[
+                                                        styles.dayBox,
+                                                        {
+                                                            borderRightWidth: 0,
+                                                            backgroundColor: "#7e759d",
+                                                        },
+                                                    ]}>
+                                                    <Text style={styles.dayLabel}>
+                                                        {groupIndex * numColumns + index + 1}
+                                                    </Text>
+                                                </View>
+                                            );
+                                        }
                                         return (
                                             <View
                                                 key={index}
@@ -102,7 +133,9 @@ export default function RecordsScreen({ route, navigation }) {
                                                         ? { borderRightWidth: 0 }
                                                         : {},
                                                 ]}>
-                                                <Text style={styles.dayLabel}>{day}</Text>
+                                                <Text style={styles.dayLabel}>
+                                                    {groupIndex * numColumns + index + 1}
+                                                </Text>
                                             </View>
                                         );
                                     })}

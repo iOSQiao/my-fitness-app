@@ -40,6 +40,8 @@ const defaultConfig = {
     ],
 };
 
+const CacheDataName = "challengeData";
+
 function isString(value) {
     return typeof value === "string";
 }
@@ -47,7 +49,7 @@ function isString(value) {
 // 初始化全局变量
 export const initGlobalSettings = async () => {
     try {
-        const jsonValue = await AsyncStorage.getItem("globalSettings");
+        const jsonValue = await AsyncStorage.getItem(CacheDataName);
         if (jsonValue == null) {
             await saveGlobalSettings(defaultConfig);
         } else {
@@ -66,7 +68,7 @@ export const saveGlobalSettings = async (settings) => {
         if (!isString(settings)) {
             jsonValue = JSON.stringify(settings);
         }
-        await AsyncStorage.setItem("globalSettings", jsonValue);
+        await AsyncStorage.setItem(CacheDataName, jsonValue);
     } catch (e) {
         console.error(e);
     }
@@ -76,7 +78,7 @@ export const saveGlobalSettings = async (settings) => {
 // 读取全局变量
 export const getGlobalSettings = async () => {
     try {
-        const jsonValue = await AsyncStorage.getItem("globalSettings");
+        const jsonValue = await AsyncStorage.getItem(CacheDataName);
         if (!isString(jsonValue)) {
             return jsonValue;
         }
@@ -91,7 +93,7 @@ export const clearAllData = async () => {
     try {
         await AsyncStorage.clear();
         console.log("All data cleared");
-        initGlobalSettings();
+        await initGlobalSettings();
     } catch (e) {
         console.error("Error clearing data:", e);
     }
