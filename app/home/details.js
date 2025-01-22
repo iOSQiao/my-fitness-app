@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { View, Text, ScrollView, StyleSheet, Image, SafeAreaView } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { Ionicons } from "@expo/vector-icons";
 
 import LevelView from "../../components/home/LevelView";
 import * as helper from "../../utils/challengeDataHelper";
@@ -31,8 +32,43 @@ export default function DetailsScreen({ route, navigation }) {
         setExercises(challenge?.exercises || []);
     };
 
+    const formatTime = (seconds) => {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+
+        // 格式化为两位数
+        const formattedMinutes = String(minutes).padStart(2, "0");
+        const formattedSeconds = String(remainingSeconds).padStart(2, "0");
+
+        return `${formattedMinutes}:${formattedSeconds}`;
+    };
+
+    useEffect(() => {
+        let mseconds = 0;
+        exercises.forEach((exercise) => {
+            mseconds += exercise.duration;
+        });
+        setMseconds(mseconds);
+    }, [exercises]);
+
+    const [mseconds, setMseconds] = useState(0);
+    const [seconds, setSeconds] = useState(45);
+    const [calories, setCalories] = useState(5);
+
     const handleChangeLevel = (level) => {
         setLevel(level);
+        setCalories(5 + (level - 1) * 5);
+    };
+
+    const handleSub = () => {
+        if (seconds <= 5) {
+            return;
+        }
+        setSeconds(seconds - 5);
+    };
+
+    const handleAdd = () => {
+        setSeconds(seconds + 5);
     };
 
     const handleStart = () => {
@@ -42,6 +78,37 @@ export default function DetailsScreen({ route, navigation }) {
             currentDay: route.params.currentDay,
         });
     };
+
+    const renderCenter = useMemo(() => {
+        return (
+            <View style={styles.center}>
+                <View style={styles.item}>
+                    <Text style={styles.value}>{formatTime(mseconds)}</Text>
+                    <Text style={styles.label}>Minutes</Text>
+                </View>
+                <View style={styles.item}>
+                    <Text style={styles.value}>{seconds}</Text>
+                    <Text style={styles.label}>Seconds</Text>
+                    <View style={styles.countdown}>
+                        <View style={styles.sub}>
+                            <TouchableOpacity onPress={handleSub}>
+                                <Ionicons name="remove-circle-outline" size={30} color="black" />
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.add}>
+                            <TouchableOpacity onPress={handleAdd}>
+                                <Ionicons name="add-circle-outline" size={30} color="black" />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+                <View style={styles.item}>
+                    <Text style={styles.value}>{calories}</Text>
+                    <Text style={styles.label}>Calories</Text>
+                </View>
+            </View>
+        );
+    });
 
     const renderExercises = useMemo(() => {
         return exercises.map((exercise, index) => (
@@ -66,6 +133,7 @@ export default function DetailsScreen({ route, navigation }) {
                         </View>
                         <View style={styles.main}>
                             <LevelView level={level} onChange={handleChangeLevel} />
+                            {renderCenter}
                             <Text style={styles.exercisesTitle}>Exercises</Text>
                             <View style={styles.divide}></View>
                             {renderExercises}
@@ -132,7 +200,8 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
     main: {
-        minHeight: 500,
+        flexDirection: "column",
+        paddingTop: 20,
     },
     exercisesTitle: {
         color: "#000",
@@ -141,7 +210,7 @@ const styles = StyleSheet.create({
         lineHeight: 16,
         textAlign: "center",
         width: "100%",
-        marginTop: 30,
+        marginTop: 60,
     },
     divide: {
         width: "100%",
@@ -178,5 +247,42 @@ const styles = StyleSheet.create({
         lineHeight: 14,
         marginLeft: 10,
         marginTop: 5,
+    },
+    center: {
+        marginTop: 20,
+        width: "100%",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "flex-start",
+    },
+    item: {
+        flex: 1,
+        alignItems: "center",
+    },
+    value: {
+        color: "#000",
+        fontSize: 24,
+        fontWeight: "bold",
+        lineHeight: 24,
+    },
+    label: {
+        marginTop: 10,
+        color: "gray",
+        fontSize: 14,
+        fontWeight: "normal",
+        lineHeight: 14,
+    },
+    countdown: {
+        flexDirection: "row",
+        marginTop: 15,
+        gap: 10,
+    },
+    sub: {
+        width: 30,
+        height: 30,
+    },
+    add: {
+        width: 30,
+        height: 30,
     },
 });
