@@ -21,9 +21,9 @@ export default function ChallengesView({ onPress }) {
                 items.map((item, index) => (
                     <TouchableOpacity key={index} onPress={() => onPress && onPress(item)}>
                         <View style={styles.container}>
-                            <Image source={item.uri} style={styles.image} />
+                            <Image source={item.img} style={styles.img} />
                             <Text style={styles.title}>{item.title}</Text>
-                            <Text style={styles.desc}>{item.desc}</Text>
+                            <Text style={styles.duration}>{item.duration}</Text>
                         </View>
                     </TouchableOpacity>
                 ))}
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         overflow: "hidden",
     },
-    image: {
+    img: {
         width: "100%",
         height: "100%",
         resizeMode: "cover",
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
         backgroundColor: "transparent",
         padding: 5,
     },
-    desc: {
+    duration: {
         position: "absolute",
         right: 15,
         top: 15,

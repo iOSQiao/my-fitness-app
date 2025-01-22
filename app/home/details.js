@@ -12,12 +12,12 @@ export default function DetailsScreen({ route, navigation }) {
     }, [navigation]);
 
     const [title, setTitle] = React.useState("");
-    const [source, setSource] = React.useState(null);
+    const [img, setImg] = React.useState(null);
 
     useEffect(() => {
         const challenge = route.params.challenge;
         setTitle(challenge?.title || "");
-        setSource(challenge?.uri || null);
+        setImg(challenge?.img || null);
     }, []);
 
     const handleStart = () => {
@@ -40,7 +40,7 @@ export default function DetailsScreen({ route, navigation }) {
                 <View style={styles.scrollViewContainer}>
                     <ScrollView>
                         <View style={styles.header}>
-                            <Image source={source} style={styles.bg} />
+                            <Image source={img} style={styles.bg} />
                             <Text style={styles.title}>{title}</Text>
                         </View>
                         <View style={styles.main}>

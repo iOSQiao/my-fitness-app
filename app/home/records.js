@@ -24,12 +24,12 @@ export default function RecordsScreen({ route, navigation }) {
     }, [navigation]);
 
     const [title, setTitle] = React.useState("");
-    const [source, setSource] = React.useState(null);
+    const [img, setImg] = React.useState(null);
 
     useEffect(() => {
         const challenge = route.params.challenge;
         setTitle(challenge?.title || "");
-        setSource(challenge?.uri || null);
+        setImg(challenge?.img || null);
     }, []);
 
     const handlerClearChallengePopup = () => {
@@ -44,6 +44,8 @@ export default function RecordsScreen({ route, navigation }) {
     };
 
     const handlerClearChallenge = async () => {
+        // await helper.clearAllData();
+        // return;
         const challenge = route.params.challenge;
         const settings = await helper.getGlobalSettings();
         const index = settings.challenges.findIndex((c) => c.id === challenge.id);
@@ -113,7 +115,7 @@ export default function RecordsScreen({ route, navigation }) {
                 <View style={styles.scrollViewContainer}>
                     <ScrollView>
                         <View style={styles.header}>
-                            <Image source={source} style={styles.bg} />
+                            <Image source={img} style={styles.bg} />
                             <View style={styles.progressContainer}>
                                 <View style={styles.progressTop}>
                                     <Text style={styles.left}>
