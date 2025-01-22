@@ -1,11 +1,18 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { View, Text, ScrollView, StyleSheet, Image, Alert } from "react-native";
+import { View, Text, ScrollView, StyleSheet, Image, Alert, SafeAreaView } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 
 import * as helper from "../../utils/challengeDataHelper";
 
 export default function RecordsScreen({ route, navigation }) {
+    useEffect(() => {
+        navigation.getParent()?.setOptions({ tabBarStyle: { display: "none" } });
+        return () => {
+            navigation.getParent()?.setOptions({ tabBarStyle: { display: "flex" } });
+        };
+    }, [navigation]);
+
     const [title, setTitle] = React.useState("");
     const [source, setSource] = React.useState(null);
 
@@ -97,101 +104,110 @@ export default function RecordsScreen({ route, navigation }) {
     };
 
     return (
-        <View style={styles.container}>
-            <View style={styles.scrollViewContainer}>
-                <ScrollView>
-                    <View style={styles.content}>
-                        <Image source={source} style={styles.bg} />
-                        <View style={styles.progressContainer}>
-                            <View style={styles.progressTop}>
-                                <Text style={styles.left}>
-                                    {`${
-                                        currentDay === -1 ? 0 : days.length - currentDay
-                                    } days left`}
-                                </Text>
-                                <Text style={styles.right}>
-                                    {currentDay === -1
-                                        ? 100
-                                        : parseInt((currentDay / days.length) * 100)}
-                                    %
-                                </Text>
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+            <View style={styles.container}>
+                <View style={styles.scrollViewContainer}>
+                    <ScrollView>
+                        <View style={styles.content}>
+                            <Image source={source} style={styles.bg} />
+                            <View style={styles.progressContainer}>
+                                <View style={styles.progressTop}>
+                                    <Text style={styles.left}>
+                                        {`${
+                                            currentDay === -1 ? 0 : days.length - currentDay
+                                        } days left`}
+                                    </Text>
+                                    <Text style={styles.right}>
+                                        {currentDay === -1
+                                            ? 100
+                                            : parseInt((currentDay / days.length) * 100)}
+                                        %
+                                    </Text>
+                                </View>
+                                <View style={styles.progress}>
+                                    <View style={styles.total}></View>
+                                    <View
+                                        style={[
+                                            styles.rest,
+                                            {
+                                                width: `${parseInt(
+                                                    (currentDay / days.length) * 100
+                                                )}%`,
+                                            },
+                                        ]}></View>
+                                </View>
                             </View>
-                            <View style={styles.progress}>
-                                <View style={styles.total}></View>
-                                <View
-                                    style={[
-                                        styles.rest,
-                                        { width: `${parseInt((currentDay / days.length) * 100)}%` },
-                                    ]}></View>
-                            </View>
+                            <Text style={styles.title}>{title}</Text>
                         </View>
-                        <Text style={styles.title}>{title}</Text>
-                    </View>
-                    <View style={styles.daysContainer}>
-                        {groupDays.map((group, groupIndex) => (
-                            <View style={styles.dayGroup} key={groupIndex}>
-                                <Text style={styles.weekTitle}>Week {groupIndex + 1}</Text>
-                                <View style={styles.dayRow}>
-                                    {group.map((day, index) => {
-                                        if (day === null) {
+                        <View style={styles.daysContainer}>
+                            {groupDays.map((group, groupIndex) => (
+                                <View style={styles.dayGroup} key={groupIndex}>
+                                    <Text style={styles.weekTitle}>Week {groupIndex + 1}</Text>
+                                    <View style={styles.dayRow}>
+                                        {group.map((day, index) => {
+                                            if (day === null) {
+                                                return (
+                                                    <View
+                                                        key={index}
+                                                        style={[
+                                                            styles.dayBox,
+                                                            { opacity: 0 },
+                                                        ]}></View>
+                                                );
+                                            }
+                                            if (groupIndex * numColumns + index === currentDay) {
+                                                return (
+                                                    <View key={index} style={styles.dayBoxActive}>
+                                                        <Text style={styles.dayLabelActive}>
+                                                            {groupIndex * numColumns + index + 1}
+                                                        </Text>
+                                                    </View>
+                                                );
+                                            }
+                                            if (!!day) {
+                                                return (
+                                                    <View key={index} style={styles.dayBox}>
+                                                        <Text style={styles.dayLabelSuccess}>
+                                                            {groupIndex * numColumns + index + 1}
+                                                        </Text>
+                                                        <Ionicons
+                                                            name="checkmark"
+                                                            size={36}
+                                                            color="#000"
+                                                        />
+                                                    </View>
+                                                );
+                                            }
                                             return (
                                                 <View
                                                     key={index}
-                                                    style={[styles.dayBox, { opacity: 0 }]}></View>
-                                            );
-                                        }
-                                        if (groupIndex * numColumns + index === currentDay) {
-                                            return (
-                                                <View key={index} style={styles.dayBoxActive}>
-                                                    <Text style={styles.dayLabelActive}>
+                                                    style={[
+                                                        styles.dayBox,
+                                                        index === group.length - 1
+                                                            ? { borderRightWidth: 0 }
+                                                            : {},
+                                                    ]}>
+                                                    <Text style={styles.dayLabel}>
                                                         {groupIndex * numColumns + index + 1}
                                                     </Text>
                                                 </View>
                                             );
-                                        }
-                                        if (!!day) {
-                                            return (
-                                                <View key={index} style={styles.dayBox}>
-                                                    <Text style={styles.dayLabelSuccess}>
-                                                        {groupIndex * numColumns + index + 1}
-                                                    </Text>
-                                                    <Ionicons
-                                                        name="checkmark"
-                                                        size={36}
-                                                        color="#000"
-                                                    />
-                                                </View>
-                                            );
-                                        }
-                                        return (
-                                            <View
-                                                key={index}
-                                                style={[
-                                                    styles.dayBox,
-                                                    index === group.length - 1
-                                                        ? { borderRightWidth: 0 }
-                                                        : {},
-                                                ]}>
-                                                <Text style={styles.dayLabel}>
-                                                    {groupIndex * numColumns + index + 1}
-                                                </Text>
-                                            </View>
-                                        );
-                                    })}
+                                        })}
+                                    </View>
                                 </View>
-                            </View>
-                        ))}
+                            ))}
+                        </View>
+                    </ScrollView>
+                </View>
+                <View style={styles.startBtnContainer}>
+                    <View style={styles.startBtn}>
+                        <TouchableOpacity onPress={handleStartDay}>
+                            <Text style={styles.startLabel}>START DAY 5</Text>
+                        </TouchableOpacity>
                     </View>
-                </ScrollView>
-            </View>
-            <View style={styles.startBtnContainer}>
-                <View style={styles.startBtn}>
-                    <TouchableOpacity onPress={handleStartDay}>
-                        <Text style={styles.startLabel}>START DAY 5</Text>
-                    </TouchableOpacity>
                 </View>
             </View>
-        </View>
+        </SafeAreaView>
     );
 }
 

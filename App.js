@@ -36,7 +36,6 @@ export default function App() {
                                 size={size}
                             />
                         ),
-                        tabBarVisible: false,
                     }}
                 />
                 <Tab.Screen

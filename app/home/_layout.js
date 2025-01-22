@@ -23,7 +23,7 @@ export default function Home() {
             <Stack.Screen
                 name="records"
                 component={RecordsScreen}
-                options={{ title: "Challenge", tabBarVisible: false }}
+                options={{ title: "Challenge" }}
             />
             <Stack.Screen name="details" component={DetailsScreen} options={{ title: "" }} />
             <Stack.Screen name="begin" component={BeginScreen} options={{ title: "" }} />
