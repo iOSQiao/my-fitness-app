@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo } from "react";
-import { View, Text, ScrollView, StyleSheet, Image } from "react-native";
+import React, { useEffect, useMemo, useState } from "react";
+import { View, Text, ScrollView, StyleSheet, Image, Alert } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -18,12 +18,23 @@ export default function RecordsScreen({ route, navigation }) {
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <TouchableOpacity onPress={handlerClearChallenge} style={{ marginRight: 10 }}>
+                <TouchableOpacity onPress={handlerClearChallengePopup} style={{ marginRight: 10 }}>
                     <Ionicons name="refresh" size={24} color="#000" />
                 </TouchableOpacity>
             ),
         });
     }, [navigation]);
+
+    const handlerClearChallengePopup = () => {
+        Alert.alert("Reset", "Are you sure you want to reset your progress for this challenge?", [
+            {
+                text: "No",
+                onPress: () => console.log("Cancel Pressed"),
+                style: "cancel",
+            },
+            { text: "YES,reset!", onPress: () => handlerClearChallenge() },
+        ]);
+    };
 
     const handlerClearChallenge = async () => {
         const challenge = route.params.challenge;
