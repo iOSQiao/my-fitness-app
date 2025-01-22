@@ -36,7 +36,6 @@ export default function DetailsScreen({ route, navigation }) {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = seconds % 60;
 
-        // 格式化为两位数
         const formattedMinutes = String(minutes).padStart(2, "0");
         const formattedSeconds = String(remainingSeconds).padStart(2, "0");
 
@@ -73,7 +72,11 @@ export default function DetailsScreen({ route, navigation }) {
 
     const handleStart = () => {
         // TODO
-        navigation.navigate("end", {
+        // navigation.navigate("end", {
+        //     challengeId: route.params.challengeId,
+        //     currentDay: route.params.currentDay,
+        // });
+        navigation.navigate("begin", {
             challengeId: route.params.challengeId,
             currentDay: route.params.currentDay,
         });

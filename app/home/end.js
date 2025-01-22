@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
     main: {
-        minHeight: 500,
+        flexDirection: "column",
     },
     startBtnContainer: {
         width: "100%",
