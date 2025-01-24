@@ -1,10 +1,12 @@
 import React, { useEffect, useMemo, useState, useRef } from "react";
-import { View, Text, ScrollView, StyleSheet, Image } from "react-native";
+import { View, Text, ScrollView, StyleSheet, Image, Dimensions } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 
 import * as helper from "../../utils/challengeDataHelper";
+
+const screenWidth = Dimensions.get("window").width;
 
 export default function BeginScreen({ route, navigation }) {
     React.useLayoutEffect(() => {
@@ -21,6 +23,10 @@ export default function BeginScreen({ route, navigation }) {
     const [title, setTitle] = React.useState("");
     const [img, setImg] = React.useState(null);
     const exercisesRef = useRef([]);
+    const exerciseIndexRef = useRef(null);
+    const exerciseFinishedDurationRef = useRef(0);
+    const exercisesTotal = useRef(0);
+    const exercisesFinished = useRef(0);
 
     useEffect(() => {
         fetchData();
@@ -34,6 +40,7 @@ export default function BeginScreen({ route, navigation }) {
         setTitle(challenge?.name || "");
         setImg(challenge?.img || null);
         exercisesRef.current = challenge?.exercises || [];
+        exercisesTotal.current = exercisesRef.current.length;
         handleExercise();
     };
 
@@ -57,10 +64,11 @@ export default function BeginScreen({ route, navigation }) {
             // TODO: navigate to end screen
             return;
         }
-        // const durationMinutes = route.params.durationMinutes;
         const exercise = exercisesRef.current.shift();
+        exerciseIndexRef.current = exercise;
         timeRef.current = exercise.duration;
         setTime(timeRef.current);
+        exercisesFinished.current += 1;
         readyAction();
     };
 
@@ -94,6 +102,7 @@ export default function BeginScreen({ route, navigation }) {
             } else {
                 timeRef.current -= 1;
                 setTime(timeRef.current);
+                exerciseFinishedDurationRef.current += 1;
             }
         }, 1000);
     };
@@ -115,6 +124,28 @@ export default function BeginScreen({ route, navigation }) {
 
     const [itemProgress, setItemProgress] = useState(0);
     const [groupProgress, setGroupProgress] = useState(0);
+
+    useEffect(() => {
+        if (!exerciseIndexRef.current) {
+            return;
+        }
+        if (time <= 0) {
+            setItemProgress(0);
+            return;
+        }
+        const progress = 100 - (time / exerciseIndexRef.current.duration) * 100;
+        setItemProgress(progress);
+    }, [time]);
+
+    useEffect(() => {
+        const durationMinutes = route.params.durationMinutes;
+        const progress = (exerciseFinishedDurationRef.current / durationMinutes) * 100;
+        setGroupProgress(progress);
+    }, [exerciseFinishedDurationRef.current]);
+
+    const sectionLabel = useMemo(() => {
+        return `${exercisesFinished.current}/${exercisesTotal.current}`;
+    }, [exercisesFinished.current, exercisesTotal.current]);
 
     const insets = useSafeAreaInsets();
 
@@ -140,9 +171,26 @@ export default function BeginScreen({ route, navigation }) {
                             <Text style={styles.title}>{title}</Text>
                         </View>
                         <View style={styles.countdown}>
-                            <View style={styles.itemProgress}></View>
-                            <View style={styles.groupProgress}></View>
-                            <Text style={styles.countdownSeconds}>{time}</Text>
+                            <View style={styles.itemProgress}>
+                                <View
+                                    style={{
+                                        width: `${itemProgress}%`,
+                                        height: "100%",
+                                        backgroundColor: "#504083",
+                                    }}></View>
+                                <Text style={styles.countdownSeconds}>{time ? time : ""}</Text>
+                            </View>
+                            <View style={styles.groupProgress}>
+                                <View
+                                    style={{
+                                        width: `${groupProgress}%`,
+                                        height: "100%",
+                                        backgroundColor: "#444444",
+                                    }}></View>
+                            </View>
+                            <View style={styles.section}>
+                                <Text style={styles.sectionLabel}>{sectionLabel}</Text>
+                            </View>
                         </View>
                         <View style={styles.pause}>
                             <TouchableOpacity onPress={handlePause}>
@@ -212,7 +260,7 @@ const styles = StyleSheet.create({
     countdown: {
         backgroundColor: "#444444",
         width: "100%",
-        height: 200,
+        height: 240,
     },
     countdownSeconds: {
         color: "#fff",
@@ -220,5 +268,36 @@ const styles = StyleSheet.create({
         lineHeight: 100,
         fontWeight: "bold",
         textAlign: "center",
+        position: "absolute",
+        top: 50,
+        left: 0,
+        right: 0,
+    },
+    itemProgress: {
+        backgroundColor: "444444",
+        width: "100%",
+        height: 200,
+    },
+    groupProgress: {
+        backgroundColor: "#888888",
+        width: "100%",
+        height: 40,
+    },
+    section: {
+        backgroundColor: "#fff",
+        width: 100,
+        height: 30,
+        borderRadius: 8,
+        position: "absolute",
+        bottom: 40 - 15,
+        left: (screenWidth - 100) / 2,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    sectionLabel: {
+        color: "#000",
+        fontSize: 16,
+        lineHeight: 16,
+        fontWeight: "bold",
     },
 });
