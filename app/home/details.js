@@ -47,38 +47,36 @@ export default function DetailsScreen({ route, navigation }) {
         exercises.forEach((exercise) => {
             mseconds += exercise.duration;
         });
-        setMseconds(mseconds);
+        setDurationMinutes(mseconds);
     }, [exercises]);
 
-    const [mseconds, setMseconds] = useState(0);
-    const [seconds, setSeconds] = useState(45);
+    const [durationMinutes, setDurationMinutes] = useState(0);
+    const [spaceSeconds, setSpaceSeconds] = useState(5);
     const [calories, setCalories] = useState(5);
 
     const handleChangeLevel = (level) => {
         setLevel(level);
-        setCalories(5 + (level - 1) * 5);
+        setCalories(5 + (level - 1));
     };
 
     const handleSub = () => {
-        if (seconds <= 5) {
+        if (spaceSeconds <= 5) {
             return;
         }
-        setSeconds(seconds - 5);
+        setSpaceSeconds(spaceSeconds - 5);
     };
 
     const handleAdd = () => {
-        setSeconds(seconds + 5);
+        setSpaceSeconds(spaceSeconds + 5);
     };
 
     const handleStart = () => {
-        // TODO
-        // navigation.navigate("end", {
-        //     challengeId: route.params.challengeId,
-        //     currentDay: route.params.currentDay,
-        // });
         navigation.navigate("begin", {
             challengeId: route.params.challengeId,
             currentDay: route.params.currentDay,
+            durationMinutes: durationMinutes,
+            spaceSeconds: spaceSeconds,
+            calories: calories,
         });
     };
 
@@ -86,11 +84,11 @@ export default function DetailsScreen({ route, navigation }) {
         return (
             <View style={styles.center}>
                 <View style={styles.item}>
-                    <Text style={styles.value}>{formatTime(mseconds)}</Text>
+                    <Text style={styles.value}>{formatTime(durationMinutes)}</Text>
                     <Text style={styles.label}>Minutes</Text>
                 </View>
-                <View style={styles.item}>
-                    <Text style={styles.value}>{seconds}</Text>
+                <View style={[styles.item, { display: "none" }]}>
+                    <Text style={styles.value}>{spaceSeconds}</Text>
                     <Text style={styles.label}>Seconds</Text>
                     <View style={styles.countdown}>
                         <View style={styles.sub}>

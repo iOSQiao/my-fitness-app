@@ -34,7 +34,11 @@ export default function Home() {
                 component={DetailsScreen}
                 options={{ title: "", headerBackTitle: "" }}
             />
-            <Stack.Screen name="begin" component={BeginScreen} options={{ title: "" }} />
+            <Stack.Screen
+                name="begin"
+                component={BeginScreen}
+                options={{ title: "", headerBackTitle: "", gestureEnabled: false }}
+            />
             <Stack.Screen
                 name="end"
                 component={EndScreen}
