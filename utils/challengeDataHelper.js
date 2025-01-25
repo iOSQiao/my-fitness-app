@@ -14,12 +14,7 @@ const defaultConfig = {
                 {
                     name: "Squat",
                     img: require("../assets/squats.jpg"),
-                    duration: 10,
-                },
-                {
-                    name: "Squat2",
-                    img: require("../assets/squats.jpg"),
-                    duration: 7,
+                    duration: 5,
                 },
             ],
         },

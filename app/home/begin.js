@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState, useRef } from "react";
-import { View, Text, ScrollView, StyleSheet, Image, Dimensions } from "react-native";
+import { View, Text, ScrollView, StyleSheet, Image, Dimensions, Modal } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
@@ -38,7 +38,7 @@ export default function BeginScreen({ route, navigation }) {
         const index = settings.challenges.findIndex((c) => c.id === challengeId);
         const challenge = settings.challenges[index];
         setTitle(challenge?.name || "");
-        setImg(challenge?.img || null);
+        // setImg(challenge?.img || null);
         exercisesRef.current = challenge?.exercises || [];
         exercisesTotal.current = exercisesRef.current.length;
         handleExercise();
@@ -49,7 +49,6 @@ export default function BeginScreen({ route, navigation }) {
 
     const timeRef = useRef(0);
     const [time, setTime] = useState(0);
-    const [isActive, setIsActive] = useState(false);
     const intervalRef = useRef(null);
 
     useEffect(() => {
@@ -61,12 +60,22 @@ export default function BeginScreen({ route, navigation }) {
 
     const handleExercise = () => {
         if (exercisesRef.current.length === 0) {
-            // TODO: navigate to end screen
+            navigation.navigate("end", {
+                challengeId: route.params.challengeId,
+                currentDay: route.params.currentDay,
+                durationMinutes: route.params.durationMinutes,
+                spaceSeconds: route.params.spaceSeconds,
+                calories: route.params.calories,
+                exercisesTotal: exercisesTotal.current,
+            });
             return;
         }
-        const exercise = exercisesRef.current.shift();
-        exerciseIndexRef.current = exercise;
-        timeRef.current = exercise.duration;
+        if (!exerciseIndexRef.current) {
+            const exercise = exercisesRef.current.shift();
+            exerciseIndexRef.current = exercise;
+        }
+        setImg(exerciseIndexRef.current.img);
+        timeRef.current = exerciseIndexRef.current.duration;
         setTime(timeRef.current);
         exercisesFinished.current += 1;
         readyAction();
@@ -98,6 +107,7 @@ export default function BeginScreen({ route, navigation }) {
             if (timeRef.current <= 0) {
                 clearInterval(intervalRef.current);
                 intervalRef.current = null;
+                exerciseIndexRef.current = null;
                 handleExercise();
             } else {
                 timeRef.current -= 1;
@@ -107,19 +117,12 @@ export default function BeginScreen({ route, navigation }) {
         }, 1000);
     };
 
-    useEffect(() => {
-        if (!intervalRef.current && isActive) {
+    const handlePause = () => {
+        if (!intervalRef.current) {
             return;
         }
-        if (isActive) {
-            countdownAction();
-        } else {
-            clearInterval(intervalRef.current);
-        }
-    }, [isActive]);
-
-    const handlePause = () => {
-        setIsActive((prev) => !prev);
+        clearInterval(intervalRef.current);
+        setModalVisible(true);
     };
 
     const [itemProgress, setItemProgress] = useState(0);
@@ -146,6 +149,8 @@ export default function BeginScreen({ route, navigation }) {
     const sectionLabel = useMemo(() => {
         return `${exercisesFinished.current}/${exercisesTotal.current}`;
     }, [exercisesFinished.current, exercisesTotal.current]);
+
+    const [modalVisible, setModalVisible] = useState(false);
 
     const insets = useSafeAreaInsets();
 
@@ -203,6 +208,43 @@ export default function BeginScreen({ route, navigation }) {
                     </ScrollView>
                 </View>
             </View>
+            <Modal
+                transparent={true} // 设置背景透明
+                visible={modalVisible}
+                animationType="fade"
+                onRequestClose={() => setModalVisible(false)}>
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalContent}>
+                        <Text style={styles.modalText}>这是一个全屏半透明背景的Modal</Text>
+                        <View style={styles.modalButtonGroup}>
+                            <View style={styles.modalButtonContainer}>
+                                <View style={styles.modalButton}>
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            setModalVisible(false);
+                                            navigation.goBack();
+                                        }}>
+                                        <Ionicons name="close" size={60} color="#444444" />
+                                    </TouchableOpacity>
+                                </View>
+                                <Text style={styles.modalButtonLabel}>Quit</Text>
+                            </View>
+                            <View style={styles.modalButtonContainer}>
+                                <View style={styles.modalButton}>
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            setModalVisible(false);
+                                            countdownAction();
+                                        }}>
+                                        <Ionicons name="play" size={60} color="#444444" />
+                                    </TouchableOpacity>
+                                </View>
+                                <Text style={styles.modalButtonLabel}>Continue</Text>
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 }
@@ -217,6 +259,7 @@ const styles = StyleSheet.create({
     },
     bg: {
         width: "100%",
+        height: 260,
     },
     center: {
         flex: 1,
@@ -233,7 +276,7 @@ const styles = StyleSheet.create({
     },
     go: {
         position: "absolute",
-        bottom: 200 + 60 + 36 + 40,
+        bottom: 240 + 60 + 36 + 40,
         left: 0,
         right: 0,
         justifyContent: "center",
@@ -248,7 +291,7 @@ const styles = StyleSheet.create({
     },
     pause: {
         position: "absolute",
-        bottom: 200 - 30,
+        bottom: 240 - 30,
         right: 20,
         justifyContent: "center",
         alignItems: "center",
@@ -299,5 +342,40 @@ const styles = StyleSheet.create({
         fontSize: 16,
         lineHeight: 16,
         fontWeight: "bold",
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "rgba(0, 0, 0, 0.8)",
+    },
+    modalContent: {
+        alignItems: "center",
+    },
+    modalText: {
+        fontSize: 18,
+        marginBottom: 20,
+    },
+    modalButtonGroup: {
+        flexDirection: "row",
+        columnGap: 40,
+    },
+    modalButtonContainer: {
+        alignItems: "center",
+        justifyContent: "center",
+        rowGap: 10,
+    },
+    modalButton: {
+        width: 80,
+        height: 80,
+        borderRadius: 40,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "#fff",
+    },
+    modalButtonLabel: {
+        fontSize: 16,
+        color: "#fff",
+        lineHeight: 16,
     },
 });
