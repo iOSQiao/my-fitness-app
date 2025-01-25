@@ -4,6 +4,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 
 import * as helper from "../../utils/challengeDataHelper";
+import { defaultConfig } from "../../utils/config";
 
 export default function RecordsScreen({ route, navigation }) {
     React.useLayoutEffect(() => {
@@ -35,18 +36,22 @@ export default function RecordsScreen({ route, navigation }) {
     };
 
     const handlerClearChallenge = async () => {
-        await helper.clearAllData();
-        return;
+        // await helper.clearAllData();
+        // return;
+
         // TODO: 应该是重置当前挑战，包括进度和其它的配置
-        // const challengeId = route.params.challengeId;
-        // const settings = await helper.getChallengeSettings();
-        // const index = settings.challenges.findIndex((c) => c.id === challengeId);
+        const challengeId = route.params.challengeId;
+        const settings = await helper.getChallengeSettings();
+        const index = settings.challenges.findIndex((c) => c.id === challengeId);
+        const defaultChallenge = defaultConfig.challenges[index];
+        settings.challenges[index] = defaultChallenge;
+
         // settings.challenges[index].progress = Array.from(
         //     { length: settings.challenges[index].progress.length },
         //     (_, i) => false
         // );
-        // await helper.saveChallengeSettings({ ...settings });
-        // fetchData();
+        await helper.saveChallengeSettings({ ...settings });
+        fetchData();
     };
 
     const [title, setTitle] = React.useState("");
@@ -85,20 +90,6 @@ export default function RecordsScreen({ route, navigation }) {
     }, [days]);
 
     const handleStartDay = async () => {
-        // const challengeId = route.params.challengeId;
-        // const settings = await helper.getChallengeSettings();
-        // const index = settings.challenges.findIndex((c) => c.id === challengeId);
-        // const challenge = settings.challenges[index];
-        // for (let i = 0; i < challenge.progress.length; i++) {
-        //     if (!challenge.progress[i]) {
-        //         challenge.progress[i] = true;
-        //         break;
-        //     }
-        // }
-        // settings.challenges[index] = challenge;
-        // await helper.saveChallengeSettings({ ...settings });
-        // setCurrentDay(challenge.progress.findIndex((d) => !d));
-        // setDays(challenge.progress);
         navigation.navigate("details", {
             challengeId: route.params.challengeId,
             currentDay: currentDay,

@@ -58,8 +58,26 @@ export default function BeginScreen({ route, navigation }) {
         };
     }, []);
 
+    const saveExercise = async () => {
+        const challengeId = route.params.challengeId;
+        const settings = await helper.getChallengeSettings();
+        const index = settings.challenges.findIndex((c) => c.id === challengeId);
+        const challenge = settings.challenges[index];
+        for (let i = 0; i < challenge.progress.length; i++) {
+            if (!challenge.progress[i]) {
+                challenge.progress[i] = true;
+                break;
+            }
+        }
+        settings.challenges[index] = challenge;
+        await helper.saveChallengeSettings({ ...settings });
+        setCurrentDay(challenge.progress.findIndex((d) => !d));
+        setDays(challenge.progress);
+    };
+
     const handleExercise = () => {
         if (exercisesRef.current.length === 0) {
+            saveExercise();
             navigation.navigate("end", {
                 challengeId: route.params.challengeId,
                 currentDay: route.params.currentDay,
