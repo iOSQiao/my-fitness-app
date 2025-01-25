@@ -75,7 +75,7 @@ export default function EndScreen({ route, navigation }) {
                                     <Text style={styles.label}>Exercises</Text>
                                 </View>
                                 <View style={styles.item}>
-                                    <Text style={styles.value}>5</Text>
+                                    <Text style={styles.value}>{calories}</Text>
                                     <Text style={styles.label}>Calories</Text>
                                 </View>
                             </View>
