@@ -1,27 +1,28 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, StyleSheet, Image } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-export default function CurrentChallenge() {
+export default function CurrentChallenge({ title, img, currentDay, workouts, minutes, onPress }) {
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
-                <View style={styles.item}>
-                    <Text style={styles.value}>6</Text>
-                    <Text style={styles.label}>Workouts</Text>
+            <TouchableOpacity onPress={() => onPress()}>
+                <View style={styles.header}>
+                    <View style={styles.item}>
+                        <Text style={styles.value}>{workouts}</Text>
+                        <Text style={styles.label}>Workouts</Text>
+                    </View>
+                    <View style={styles.item}>
+                        <Text style={styles.value}>{minutes}</Text>
+                        <Text style={styles.label}>Minutes</Text>
+                    </View>
                 </View>
-                <View style={styles.item}>
-                    <Text style={styles.value}>9</Text>
-                    <Text style={styles.label}>Minutes</Text>
+                <View style={styles.content}>
+                    <Image source={img} style={styles.image}></Image>
+                    <Text style={styles.day}>day {currentDay}</Text>
+                    <Text style={styles.challenge}>current challenge</Text>
+                    <Text style={styles.title}>{title}</Text>
                 </View>
-            </View>
-            <View style={styles.content}>
-                <Image
-                    source={require("../../assets/images/home/challenge_1.jpg")}
-                    style={styles.image}></Image>
-                <Text style={styles.day}>day 5</Text>
-                <Text style={styles.challenge}>current challenge</Text>
-                <Text style={styles.title}>The Squat Challenge</Text>
-            </View>
+            </TouchableOpacity>
         </View>
     );
 }

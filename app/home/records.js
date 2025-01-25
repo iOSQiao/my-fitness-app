@@ -36,20 +36,11 @@ export default function RecordsScreen({ route, navigation }) {
     };
 
     const handlerClearChallenge = async () => {
-        // await helper.clearAllData();
-        // return;
-
-        // TODO: 应该是重置当前挑战，包括进度和其它的配置
         const challengeId = route.params.challengeId;
         const settings = await helper.getChallengeSettings();
         const index = settings.challenges.findIndex((c) => c.id === challengeId);
         const defaultChallenge = defaultConfig.challenges[index];
         settings.challenges[index] = defaultChallenge;
-
-        // settings.challenges[index].progress = Array.from(
-        //     { length: settings.challenges[index].progress.length },
-        //     (_, i) => false
-        // );
         await helper.saveChallengeSettings({ ...settings });
         fetchData();
     };

@@ -69,6 +69,7 @@ export default function BeginScreen({ route, navigation }) {
                 break;
             }
         }
+        settings.currentChallengeId = challengeId;
         settings.challenges[index] = challenge;
         await helper.saveChallengeSettings({ ...settings });
         setCurrentDay(challenge.progress.findIndex((d) => !d));
