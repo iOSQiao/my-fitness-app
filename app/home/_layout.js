@@ -37,7 +37,7 @@ export default function Home() {
             <Stack.Screen
                 name="begin"
                 component={BeginScreen}
-                options={{ title: "", headerBackTitle: "", gestureEnabled: false }}
+                options={{ title: "", headerBackTitle: "", gestureEnabled: true }}
             />
             <Stack.Screen
                 name="end"

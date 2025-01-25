@@ -1,49 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const defaultConfig = {
-    currentChallengeId: null,
-    challenges: [
-        {
-            id: 1001,
-            name: "Squat",
-            img: require("../assets/images/home/challenge_1.jpg"),
-            title: "The squats challenge",
-            progress: Array.from({ length: 30 }, (_, i) => false),
-            duration: "30 days",
-            exercises: [
-                {
-                    name: "Squat",
-                    img: require("../assets/squats.jpg"),
-                    duration: 5,
-                },
-            ],
-        },
-        {
-            id: 1002,
-            name: "Pushup",
-            img: require("../assets/images/home/challenge_2.jpg"),
-            title: "The push-ups challenge",
-            progress: Array.from({ length: 30 }, (_, i) => false),
-            duration: "30 days",
-        },
-        {
-            id: 1003,
-            name: "Crunch",
-            img: require("../assets/images/home/challenge_3.jpg"),
-            title: "The crunch challenge",
-            progress: Array.from({ length: 30 }, (_, i) => false),
-            duration: "30 days",
-        },
-        {
-            id: 1004,
-            name: "Pullup",
-            img: require("../assets/images/home/challenge_4.jpg"),
-            title: "The pull-ups challenge",
-            progress: Array.from({ length: 30 }, (_, i) => false),
-            duration: "30 days",
-        },
-    ],
-};
+import { defaultConfig } from "./config";
 
 const CacheDataName = "challengeData";
 
