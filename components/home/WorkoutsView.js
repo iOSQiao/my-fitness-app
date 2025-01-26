@@ -1,35 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ScrollView, View, Image, Text, StyleSheet, Dimensions } from "react-native";
 
 const { width } = Dimensions.get("window");
 
+import { defaultConfig } from "../../utils/config";
+
 export default function WorkoutsView() {
-    const items = [
-        {
-            uri: require("../../assets/planks.jpg"),
-            title: "Burpees, Squats & Planks",
-        },
-        {
+    const [items, setItems] = React.useState([]);
 
-            uri: require("../../assets/shape-body.jpg"),
-            title: "Shape your body",
-        },
-        {
-
-            uri: require("../../assets/HIIT.jpg"),
-            title: "HIIT Workout",
-        },
-        {
-            uri: require("../../assets/squat-variations.jpg"),
-            title: "Squat Variations",
-        },
-    ];
+    useEffect(() => {
+        setItems(defaultConfig.workouts);
+    }, []);
 
     return (
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             {items.map((item, index) => (
                 <View key={index} style={styles.container}>
-                    <Image source={item.uri} style={styles.image} />
+                    <Image source={item.img} style={styles.img} />
                     <Text style={styles.title}>{item.title}</Text>
                 </View>
             ))}
@@ -48,7 +35,7 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         overflow: "hidden",
     },
-    image: {
+    img: {
         width: "100%",
         height: "100%",
         resizeMode: "cover",

@@ -2,17 +2,15 @@ import React, { useEffect } from "react";
 import { ScrollView, View, Image, Text, StyleSheet, Dimensions } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-import * as helper from "../../utils/challengeDataHelper";
-
 const { width } = Dimensions.get("window");
+
+import { defaultConfig } from "../../utils/config";
 
 export default function ChallengesView({ onPress }) {
     const [items, setItems] = React.useState([]);
 
     useEffect(() => {
-        helper.getChallengeSettings().then((settings) => {
-            setItems(settings.challenges);
-        });
+        setItems(defaultConfig.challenges);
     }, []);
 
     return (
@@ -23,7 +21,7 @@ export default function ChallengesView({ onPress }) {
                         <View style={styles.container}>
                             <Image source={item.img} style={styles.img} />
                             <Text style={styles.title}>{item.title}</Text>
-                            <Text style={styles.duration}>{item.duration}</Text>
+                            <Text style={styles.duration}>{item.durationLabel}</Text>
                         </View>
                     </TouchableOpacity>
                 ))}

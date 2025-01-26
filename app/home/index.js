@@ -14,14 +14,23 @@ export default function HomeScreen({ navigation }) {
     const [img, setImg] = useState(null);
     const [currentDay, setCurrentDay] = useState(0);
     const [currentChallengeId, setCurrentChallengeId] = useState(null);
-    const [workouts, setWorkouts] = useState(0);
-    const [minutes, setMinutes] = useState(0);
+
+    //  TODO: 这里也应该从本地存储中获取
+    const [workoutsTotal, setWorkoutsTotal] = useState(0);
+    const [minutesTotal, setMinutesTotal] = useState(0);
 
     useFocusEffect(
         React.useCallback(() => {
             fetchData();
         }, [])
     );
+
+    // useEffect(() => {
+    //     const _clearAllData = async () => {
+    //         await helper.clearAllData();
+    //     };
+    //     _clearAllData();
+    // }, []);
 
     const fetchData = async () => {
         const settings = await helper.getChallengeSettings();
@@ -32,12 +41,15 @@ export default function HomeScreen({ navigation }) {
         setImg(challenge?.img || null);
         setCurrentDay(challenge.progress.findIndex((d) => !d));
         setCurrentChallengeId(challengeId);
-        setWorkouts(challenge.exercises.length);
-        let totalDuration = 0;
-        challenge.exercises.forEach((exercise) => {
-            totalDuration += exercise.duration;
-        });
-        setMinutes(parseInt((totalDuration / 60) * 30));
+        setWorkoutsTotal(settings.workoutsTotal);
+        setMinutesTotal(settings.minutesTotal);
+
+        // setWorkoutsTotal(challenge.exercises.length);
+        // let totalDuration = 0;r
+        // challenge.exercises.forEach((exercise) => {
+        //     totalDuration += exercise.duration;
+        // });
+        // setMinutesTotal(parseInt((totalDuration / 60) * 30));
     };
 
     const handleClickeChallenge = (item) => {
@@ -83,8 +95,8 @@ export default function HomeScreen({ navigation }) {
                                 title={title}
                                 img={img}
                                 currentDay={currentDay}
-                                workouts={workouts}
-                                minutes={minutes}
+                                workouts={workoutsTotal}
+                                minutes={minutesTotal}
                                 onPress={handleClickeCurrentChallenge}
                             />
                         ) : null}
