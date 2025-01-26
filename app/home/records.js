@@ -212,6 +212,7 @@ const styles = StyleSheet.create({
     },
     bg: {
         width: "100%",
+        maxHeight: 240,
     },
     progressContainer: {
         position: "absolute",
