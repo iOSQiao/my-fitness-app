@@ -49,7 +49,7 @@ export default function RecordsScreen({ route, navigation }) {
     const [img, setImg] = React.useState(null);
     const [days, setDays] = React.useState([]);
     const [groupDays, setGroupDays] = React.useState([]);
-    const [currentDay, setCurrentDay] = React.useState(null);
+    const [currentDay, setCurrentDay] = React.useState(-1);
 
     useEffect(() => {
         fetchData();

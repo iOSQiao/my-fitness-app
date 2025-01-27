@@ -9,6 +9,7 @@ export const defaultConfig = {
             img: require("../assets/images/home/challenge_1.jpg"),
             progress: Array.from({ length: 30 }, (_, i) => false),
             durationLabel: "30 days",
+            calories: 5,
             exercises: [
                 {
                     title: "Squat",
@@ -24,6 +25,7 @@ export const defaultConfig = {
             img: require("../assets/images/home/challenge_2.jpg"),
             progress: Array.from({ length: 30 }, (_, i) => false),
             durationLabel: "30 days",
+            calories: 5,
             exercises: [
                 {
                     title: "Push-ups",
@@ -39,6 +41,7 @@ export const defaultConfig = {
             img: require("../assets/images/home/challenge_3.jpg"),
             progress: Array.from({ length: 30 }, (_, i) => false),
             durationLabel: "30 days",
+            calories: 5,
             exercises: [
                 {
                     title: "Crunches",
@@ -54,6 +57,7 @@ export const defaultConfig = {
             img: require("../assets/images/home/challenge_4.jpg"),
             progress: Array.from({ length: 30 }, (_, i) => false),
             durationLabel: "30 days",
+            calories: 5,
             exercises: [
                 {
                     title: "Pull-ups",
@@ -71,6 +75,7 @@ export const defaultConfig = {
             img: require("../assets/planks.jpg"),
             progress: [],
             durationLabel: "",
+            calories: 15,
             exercises: [
                 {
                     title: "Plank Shoulder Taps",
@@ -116,6 +121,7 @@ export const defaultConfig = {
             img: require("../assets/shape-body.jpg"),
             progress: [],
             durationLabel: "",
+            calories: 5,
             exercises: [
                 {
                     title: "Donkey Kick",
@@ -161,6 +167,7 @@ export const defaultConfig = {
             img: require("../assets/HIIT.jpg"),
             progress: [],
             durationLabel: "",
+            calories: 5,
             exercises: [
                 {
                     title: "Narrow Bodyweight Squat",
@@ -206,6 +213,7 @@ export const defaultConfig = {
             img: require("../assets/squat-variations.jpg"),
             progress: [],
             durationLabel: "",
+            calories: 5,
             exercises: [
                 {
                     title: "Bodyweight Overhead Squats",

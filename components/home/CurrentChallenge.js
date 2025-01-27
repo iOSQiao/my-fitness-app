@@ -9,11 +9,11 @@ export default function CurrentChallenge({ title, img, currentDay, workouts, min
                 <View style={styles.header}>
                     <View style={styles.item}>
                         <Text style={styles.value}>{workouts}</Text>
-                        <Text style={styles.label}>Workouts</Text>
+                        <Text style={styles.label}>Workouts Total</Text>
                     </View>
                     <View style={styles.item}>
-                        <Text style={styles.value}>{minutes}</Text>
-                        <Text style={styles.label}>Minutes</Text>
+                        <Text style={styles.value}>{parseFloat(minutes / 60).toFixed(2)}</Text>
+                        <Text style={styles.label}>Minutes Total</Text>
                     </View>
                 </View>
                 <View style={styles.content}>

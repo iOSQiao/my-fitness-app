@@ -30,16 +30,28 @@ export default function EndScreen({ route, navigation }) {
     }, []);
 
     const fetchData = async () => {
-        const challengeId = route.params.challengeId;
         const settings = await helper.getGlobalSettings();
-        const index = settings.challenges.findIndex((c) => c.id === challengeId);
-        const challenge = settings.challenges[index];
-        setTitle(challenge?.title || "");
-        setImg(challenge?.img || null);
-        setCurrentDay(route.params.currentDay + 1);
-        setDurationMinutes(route.params.durationMinutes);
-        setExercisesTotal(route.params.exercisesTotal);
-        setCalories(route.params.calories);
+        if (route.params.isWorkout) {
+            const workoutId = route.params.workoutId;
+            const index = settings.workouts.findIndex((c) => c.id === workoutId);
+            const workout = settings.workouts[index];
+            setTitle(workout?.title || "");
+            setImg(workout?.img || null);
+            setCurrentDay(route.params.currentDay + 1);
+            setDurationMinutes(route.params.durationMinutes);
+            setExercisesTotal(route.params.exercisesTotal);
+            setCalories(route.params.calories);
+        } else {
+            const challengeId = route.params.challengeId;
+            const index = settings.challenges.findIndex((c) => c.id === challengeId);
+            const challenge = settings.challenges[index];
+            setTitle(challenge?.title || "");
+            setImg(challenge?.img || null);
+            setCurrentDay(route.params.currentDay + 1);
+            setDurationMinutes(route.params.durationMinutes);
+            setExercisesTotal(route.params.exercisesTotal);
+            setCalories(route.params.calories);
+        }
     };
 
     const handleContinue = () => {
@@ -67,7 +79,9 @@ export default function EndScreen({ route, navigation }) {
                         <View style={styles.main}>
                             <View style={styles.result}>
                                 <View style={styles.item}>
-                                    <Text style={styles.value}>1</Text>
+                                    <Text style={styles.value}>
+                                        {parseFloat(durationMinutes / 60).toFixed(2)}
+                                    </Text>
                                     <Text style={styles.label}>Minutes</Text>
                                 </View>
                                 <View style={styles.item}>

@@ -24,6 +24,7 @@ export default function HomeScreen({ navigation }) {
         }, [])
     );
 
+    // clear all data
     // useEffect(() => {
     //     const _clearAllData = async () => {
     //         await helper.clearAllData();

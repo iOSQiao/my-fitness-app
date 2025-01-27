@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useRef } from "react";
 import { View, Text, ScrollView, StyleSheet, Image, SafeAreaView } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
@@ -24,6 +24,12 @@ export default function DetailsScreen({ route, navigation }) {
     const [level, setLevel] = useState(0);
     const [exercises, setExercises] = useState([]);
 
+    const [durationMinutes, setDurationMinutes] = useState(0);
+    const [spaceSeconds, setSpaceSeconds] = useState(5);
+    const [calories, setCalories] = useState(0);
+
+    const caloriesRef = useRef(0);
+
     useEffect(() => {
         fetchData();
     }, []);
@@ -37,6 +43,8 @@ export default function DetailsScreen({ route, navigation }) {
             setTitle(workout?.title || "");
             setImg(workout?.img || null);
             setExercises(workout?.exercises || []);
+            setCalories(workout?.calories || 0);
+            caloriesRef.current = workout?.calories || 0;
         } else {
             const challengeId = route.params.challengeId;
             const index = settings.challenges.findIndex((c) => c.id === challengeId);
@@ -44,6 +52,8 @@ export default function DetailsScreen({ route, navigation }) {
             setTitle(challenge?.title || "");
             setImg(challenge?.img || null);
             setExercises(challenge?.exercises || []);
+            setCalories(challenge?.calories || 0);
+            caloriesRef.current = challenge?.calories || 0;
         }
     };
 
@@ -65,27 +75,16 @@ export default function DetailsScreen({ route, navigation }) {
         setDurationMinutes(mseconds);
     }, [exercises]);
 
-    const [durationMinutes, setDurationMinutes] = useState(0);
-    const [spaceSeconds, setSpaceSeconds] = useState(5);
-    const [calories, setCalories] = useState(5);
-
     const handleChangeLevel = (value) => {
         const currentLevel = level;
         setLevel(value);
-        setCalories(5 + value);
+        setCalories(caloriesRef.current + value);
         const _exercises = [];
         exercises.forEach((exercise) => {
-            if (value > currentLevel) {
-                _exercises.push({
-                    ...exercise,
-                    duration: exercise.duration + Math.abs(value - currentLevel) * 10,
-                });
-            } else {
-                _exercises.push({
-                    ...exercise,
-                    duration: exercise.duration - Math.abs(value - currentLevel) * 10,
-                });
-            }
+            _exercises.push({
+                ...exercise,
+                duration: exercise.duration + (value - currentLevel) * 10,
+            });
         });
         setExercises(_exercises);
     };
