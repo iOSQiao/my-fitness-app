@@ -19,9 +19,6 @@ export default function RecordsScreen({ route, navigation }) {
 
     React.useLayoutEffect(() => {
         navigation.getParent()?.setOptions({ tabBarStyle: { display: "none" } });
-        return () => {
-            navigation.getParent()?.setOptions({ tabBarStyle: { display: "flex" } });
-        };
     }, [navigation]);
 
     const handlerClearChallengePopup = () => {

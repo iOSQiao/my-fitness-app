@@ -40,13 +40,14 @@ export default function BeginScreen({ route, navigation }) {
             const workout = settings.workouts[index];
             exercisesRef.current = workout?.exercises || [];
             exercisesTotal.current = exercisesRef.current.length;
-            handleExercise();
         } else {
             const challengeId = route.params.challengeId;
             const index = settings.challenges.findIndex((c) => c.id === challengeId);
             const challenge = settings.challenges[index];
             exercisesRef.current = challenge?.exercises || [];
             exercisesTotal.current = exercisesRef.current.length;
+        }
+        if (exercisesRef.current.length > 0) {
             handleExercise();
         }
     };
@@ -76,28 +77,35 @@ export default function BeginScreen({ route, navigation }) {
                 break;
             }
         }
-        settings.currentChallengeId = challengeId;
+        challenge.calories = route.params.calories;
         settings.challenges[index] = challenge;
         settings.workoutsTotal += 1;
         settings.minutesTotal += route.params.durationMinutes;
+        settings.currentChallengeId = challengeId;
         await helper.saveGlobalSettings({ ...settings });
     };
 
     const saveWorkoutExercise = async () => {
         const settings = await helper.getGlobalSettings();
+        const workoutId = route.params.workoutId;
+        const index = settings.workouts.findIndex((c) => c.id === workoutId);
+        const workout = settings.workouts[index];
+        workout.calories = route.params.calories;
         settings.workoutsTotal += 1;
         settings.minutesTotal += route.params.durationMinutes;
         await helper.saveGlobalSettings({ ...settings });
     };
 
-    const handleExercise = () => {
+    const handleExercise = async () => {
         if (exercisesRef.current.length === 0) {
             if (route.params.isWorkout) {
-                saveWorkoutExercise();
+                await saveWorkoutExercise();
             } else {
-                saveChallengeExercise();
+                await saveChallengeExercise();
             }
             navigation.navigate("end", {
+                isWorkout: route.params.isWorkout,
+                workoutId: route.params.workoutId,
                 challengeId: route.params.challengeId,
                 currentDay: route.params.currentDay,
                 durationMinutes: route.params.durationMinutes,
@@ -113,7 +121,7 @@ export default function BeginScreen({ route, navigation }) {
         }
         setTitle(exerciseIndexRef.current.title);
         setImg(exerciseIndexRef.current.img);
-        timeRef.current = exerciseIndexRef.current.duration;
+        timeRef.current = exerciseIndexRef.current.duration * exerciseIndexRef.current.multiple;
         setTime(timeRef.current);
         exercisesFinished.current += 1;
         readyAction();
@@ -174,7 +182,9 @@ export default function BeginScreen({ route, navigation }) {
             setItemProgress(0);
             return;
         }
-        const progress = 100 - (time / exerciseIndexRef.current.duration) * 100;
+        const progress =
+            100 -
+            (time / exerciseIndexRef.current.duration) * exerciseIndexRef.current.multiple * 100;
         setItemProgress(progress);
     }, [time]);
 

@@ -3,6 +3,16 @@ import { View, Text, StyleSheet, Image } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function CurrentChallenge({ title, img, currentDay, workouts, minutes, onPress }) {
+    const formatTime = (seconds) => {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+
+        const formattedMinutes = String(minutes).padStart(2, "0");
+        const formattedSeconds = String(remainingSeconds).padStart(2, "0");
+
+        return `${formattedMinutes}:${formattedSeconds}`;
+    };
+
     return (
         <View style={styles.container}>
             <TouchableOpacity onPress={() => onPress()}>
@@ -12,7 +22,7 @@ export default function CurrentChallenge({ title, img, currentDay, workouts, min
                         <Text style={styles.label}>Workouts Total</Text>
                     </View>
                     <View style={styles.item}>
-                        <Text style={styles.value}>{parseFloat(minutes / 60).toFixed(2)}</Text>
+                        <Text style={styles.value}>{formatTime(minutes)}</Text>
                         <Text style={styles.label}>Minutes Total</Text>
                     </View>
                 </View>

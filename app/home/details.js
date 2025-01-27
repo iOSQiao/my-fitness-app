@@ -8,6 +8,10 @@ import * as helper from "../../utils/globalSettingsHelper";
 
 export default function DetailsScreen({ route, navigation }) {
     React.useLayoutEffect(() => {
+        navigation.getParent()?.setOptions({ tabBarStyle: { display: "none" } });
+    }, [navigation]);
+
+    React.useLayoutEffect(() => {
         if (route.params.isWorkout) {
             navigation.setOptions({
                 title: "Workout",
@@ -28,7 +32,7 @@ export default function DetailsScreen({ route, navigation }) {
     const [spaceSeconds, setSpaceSeconds] = useState(5);
     const [calories, setCalories] = useState(0);
 
-    const caloriesRef = useRef(0);
+    const caloriesBaseRef = useRef(0);
 
     useEffect(() => {
         fetchData();
@@ -44,7 +48,8 @@ export default function DetailsScreen({ route, navigation }) {
             setImg(workout?.img || null);
             setExercises(workout?.exercises || []);
             setCalories(workout?.calories || 0);
-            caloriesRef.current = workout?.calories || 0;
+            caloriesBaseRef.current = workout?.caloriesBase || 0;
+            setLevel(workout.calories - caloriesBaseRef.current);
         } else {
             const challengeId = route.params.challengeId;
             const index = settings.challenges.findIndex((c) => c.id === challengeId);
@@ -53,7 +58,8 @@ export default function DetailsScreen({ route, navigation }) {
             setImg(challenge?.img || null);
             setExercises(challenge?.exercises || []);
             setCalories(challenge?.calories || 0);
-            caloriesRef.current = challenge?.calories || 0;
+            caloriesBaseRef.current = challenge?.caloriesBase || 0;
+            setLevel(challenge.calories - caloriesBaseRef.current);
         }
     };
 
@@ -78,7 +84,7 @@ export default function DetailsScreen({ route, navigation }) {
     const handleChangeLevel = (value) => {
         const currentLevel = level;
         setLevel(value);
-        setCalories(caloriesRef.current + value);
+        setCalories(caloriesBaseRef.current + value);
         const _exercises = [];
         exercises.forEach((exercise) => {
             _exercises.push({
@@ -120,7 +126,7 @@ export default function DetailsScreen({ route, navigation }) {
 
     const handleStart = async () => {
         if (route.params.isWorkout) {
-            saveWorkoutExercise();
+            await saveWorkoutExercise();
             navigation.navigate("begin", {
                 isWorkout: true,
                 workoutId: route.params.workoutId,
@@ -130,7 +136,7 @@ export default function DetailsScreen({ route, navigation }) {
                 calories: calories,
             });
         } else {
-            saveChallengeExercise();
+            await saveChallengeExercise();
             navigation.navigate("begin", {
                 isWorkout: false,
                 challengeId: route.params.challengeId,

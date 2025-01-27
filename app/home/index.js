@@ -20,6 +20,12 @@ export default function HomeScreen({ navigation }) {
 
     useFocusEffect(
         React.useCallback(() => {
+            navigation.getParent()?.setOptions({ tabBarStyle: { display: "flex" } });
+        })
+    );
+
+    useFocusEffect(
+        React.useCallback(() => {
             fetchData();
         }, [])
     );

@@ -10,6 +10,7 @@ export const defaultConfig = {
             progress: Array.from({ length: 30 }, (_, i) => false),
             durationLabel: "30 days",
             calories: 5,
+            caloriesBase: 5,
             exercises: [
                 {
                     title: "Squat",
@@ -26,6 +27,7 @@ export const defaultConfig = {
             progress: Array.from({ length: 30 }, (_, i) => false),
             durationLabel: "30 days",
             calories: 5,
+            caloriesBase: 5,
             exercises: [
                 {
                     title: "Push-ups",
@@ -42,6 +44,7 @@ export const defaultConfig = {
             progress: Array.from({ length: 30 }, (_, i) => false),
             durationLabel: "30 days",
             calories: 5,
+            caloriesBase: 5,
             exercises: [
                 {
                     title: "Crunches",
@@ -58,6 +61,7 @@ export const defaultConfig = {
             progress: Array.from({ length: 30 }, (_, i) => false),
             durationLabel: "30 days",
             calories: 5,
+            caloriesBase: 5,
             exercises: [
                 {
                     title: "Pull-ups",
@@ -75,42 +79,43 @@ export const defaultConfig = {
             img: require("../assets/planks.jpg"),
             progress: [],
             durationLabel: "",
-            calories: 15,
+            calories: 5,
+            caloriesBase: 5,
             exercises: [
                 {
                     title: "Plank Shoulder Taps",
                     img: require("../assets/Plank-Shoulder-Taps.jpg"),
-                    duration: 4,
+                    duration: 40,
                     multiple: 1,
                 },
                 {
                     title: "Side Plank and Leg lift",
                     img: require("../assets/Side-Plank-Leg-Lift.jpg"),
-                    duration: 4,
+                    duration: 40,
                     multiple: 2,
                 },
                 {
                     title: "Narrow Bodyweight Squat",
                     img: require("../assets/Narrow-Squat.jpg"),
-                    duration: 4,
+                    duration: 40,
                     multiple: 1,
                 },
                 {
                     title: "Bodyweight Overhead Squats",
                     img: require("../assets/Overhead-Squat.jpg"),
-                    duration: 4,
+                    duration: 40,
                     multiple: 1,
                 },
                 {
                     title: "Burpees",
                     img: require("../assets/burpees.jpg"),
-                    duration: 4,
+                    duration: 40,
                     multiple: 1,
                 },
                 {
                     title: "Plank Knee Drive",
                     img: require("../assets/plank-knee-drive.jpg"),
-                    duration: 4,
+                    duration: 40,
                     multiple: 1,
                 },
             ],
@@ -122,6 +127,7 @@ export const defaultConfig = {
             progress: [],
             durationLabel: "",
             calories: 5,
+            caloriesBase: 5,
             exercises: [
                 {
                     title: "Donkey Kick",
@@ -168,6 +174,7 @@ export const defaultConfig = {
             progress: [],
             durationLabel: "",
             calories: 5,
+            caloriesBase: 5,
             exercises: [
                 {
                     title: "Narrow Bodyweight Squat",
@@ -214,6 +221,7 @@ export const defaultConfig = {
             progress: [],
             durationLabel: "",
             calories: 5,
+            caloriesBase: 5,
             exercises: [
                 {
                     title: "Bodyweight Overhead Squats",

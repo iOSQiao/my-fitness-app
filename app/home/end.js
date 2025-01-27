@@ -37,7 +37,6 @@ export default function EndScreen({ route, navigation }) {
             const workout = settings.workouts[index];
             setTitle(workout?.title || "");
             setImg(workout?.img || null);
-            setCurrentDay(route.params.currentDay + 1);
             setDurationMinutes(route.params.durationMinutes);
             setExercisesTotal(route.params.exercisesTotal);
             setCalories(route.params.calories);
@@ -58,6 +57,16 @@ export default function EndScreen({ route, navigation }) {
         navigation.popToTop();
     };
 
+    const formatTime = (seconds) => {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+
+        const formattedMinutes = String(minutes).padStart(2, "0");
+        const formattedSeconds = String(remainingSeconds).padStart(2, "0");
+
+        return `${formattedMinutes}:${formattedSeconds}`;
+    };
+
     const insets = useSafeAreaInsets();
 
     return (
@@ -74,13 +83,13 @@ export default function EndScreen({ route, navigation }) {
                         <View style={styles.header}>
                             <Image source={img} style={styles.bg} />
                             <Text style={styles.title}>{title}</Text>
-                            <Text style={styles.currentDay}>Day {currentDay}</Text>
+                            {route.params.isWorkout ? null : <Text style={styles.currentDay}>Day {currentDay}</Text>}
                         </View>
                         <View style={styles.main}>
                             <View style={styles.result}>
                                 <View style={styles.item}>
                                     <Text style={styles.value}>
-                                        {parseFloat(durationMinutes / 60).toFixed(2)}
+                                        {formatTime(durationMinutes)}
                                     </Text>
                                     <Text style={styles.label}>Minutes</Text>
                                 </View>
@@ -130,6 +139,7 @@ const styles = StyleSheet.create({
     },
     bg: {
         width: "100%",
+        height: 240,
     },
     title: {
         position: "absolute",
