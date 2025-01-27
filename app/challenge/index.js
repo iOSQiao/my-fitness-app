@@ -1,7 +1,21 @@
+import { useEffect, useState } from "react";
 import { StyleSheet, Text, View, Button, ScrollView, Image } from "react-native";
 import { Cell, Section, TableView } from "react-native-tableview-simple";
 
+import * as helper from "../../utils/globalSettingsHelper";
+
 export default function HomeScreen({ navigation }) {
+    const [challenges, setChallenges] = useState([]);
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = async () => {
+        const settings = await helper.getGlobalSettings();
+        setChallenges(settings.challenges);
+    };
+
     // Define a new HomescreenCell constant
     const HomescreenCell = (props) => (
         <Cell
@@ -45,7 +59,27 @@ export default function HomeScreen({ navigation }) {
         <ScrollView>
             <TableView>
                 <Section header="" hideSeparator={true} separatorTintColor="#ccc">
-                    <HomescreenCell
+                    {challenges.map((challenge) => (
+                        <HomescreenCell
+                            key={challenge.id}
+                            title={challenge.title}
+                            tagline={challenge.tagline}
+                            eta="30"
+                            imgUri={challenge.img}
+                            action={() =>
+                                navigation.navigate("Challenge", {
+                                    items: [
+                                        {
+                                            title: "Exercise",
+                                            contents: challenge.exercises,
+                                        },
+                                    ],
+                                })
+                            }
+                        />
+                    ))}
+
+                    {/* <HomescreenCell
                         title="Squat"
                         tagline="Squat Everyday, get a nice shape"
                         eta="30"
@@ -132,7 +166,7 @@ export default function HomeScreen({ navigation }) {
                                 ],
                             })
                         }
-                    />
+                    /> */}
                 </Section>
             </TableView>
         </ScrollView>

@@ -1,7 +1,21 @@
+import { useEffect, useState } from "react";
 import { StyleSheet, Text, View, Button, ScrollView, Image } from "react-native";
 import { Cell, Section, TableView } from "react-native-tableview-simple";
 
+import * as helper from "../../utils/globalSettingsHelper";
+
 export default function HomeScreen({ navigation }) {
+    const [workouts, setWorkouts] = useState([]);
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = async () => {
+        const settings = await helper.getGlobalSettings();
+        setWorkouts(settings.workouts);
+    };
+
     // Define a new HomescreenCell constant
     const HomescreenCell = (props) => (
         <Cell
@@ -45,7 +59,27 @@ export default function HomeScreen({ navigation }) {
         <ScrollView>
             <TableView>
                 <Section header="" hideSeparator={true} separatorTintColor="#ccc">
-                    <HomescreenCell
+                    {workouts.map((workout) => (
+                        <HomescreenCell
+                            key={workout.id}
+                            title={workout.title}
+                            tagline={workout.tagline}
+                            eta="30"
+                            imgUri={workout.img}
+                            action={() =>
+                                navigation.navigate("Workout", {
+                                    items: [
+                                        {
+                                            title: "Exercise",
+                                            contents: workout.exercises,
+                                        },
+                                    ],
+                                })
+                            }
+                        />
+                    ))}
+
+                    {/* <HomescreenCell
                         title="Burpees, Squats & Planks"
                         tagline="Have a try at small workout"
                         eta="30"
@@ -59,35 +93,35 @@ export default function HomeScreen({ navigation }) {
                                             {
                                                 title: "Plank Shoulder Taps",
                                                 img: require("../../assets/Plank-Shoulder-Taps.jpg"),
-                                                duration: "40 seconds"
+                                                duration: "40 seconds",
                                             },
                                             {
                                                 title: "Side Plank and Leg lift",
                                                 img: require("../../assets/Side-Plank-Leg-Lift.jpg"),
-                                                duration: "2*40 seconds"
+                                                duration: "2*40 seconds",
                                             },
                                             {
                                                 title: "Narrow Bodyweight Squat",
                                                 img: require("../../assets/Narrow-Squat.jpg"),
-                                                duration: "40 seconds"
+                                                duration: "40 seconds",
                                             },
                                             {
                                                 title: "Bodyweight Overhead Squats",
                                                 img: require("../../assets/Overhead-Squat.jpg"),
-                                                duration: "40 seconds"
+                                                duration: "40 seconds",
                                             },
                                             {
                                                 title: "Burpees",
                                                 img: require("../../assets/burpees.jpg"),
-                                                duration: "40 seconds"
+                                                duration: "40 seconds",
                                             },
                                             {
                                                 title: "Plank Knee Drive",
                                                 img: require("../../assets/plank-knee-drive.jpg"),
-                                                duration: "40 seconds"
+                                                duration: "40 seconds",
                                             },
                                         ],
-                                    }
+                                    },
                                 ],
                             })
                         }
@@ -107,35 +141,35 @@ export default function HomeScreen({ navigation }) {
                                             {
                                                 title: "Donkey Kick",
                                                 img: require("../../assets/donkey-kick.jpg"),
-                                                duration: "2*40 seconds"
+                                                duration: "2*40 seconds",
                                             },
                                             {
                                                 title: "Squat Jacks",
                                                 img: require("../../assets/squat-jacks.jpg"),
-                                                duration: "40 seconds"
+                                                duration: "40 seconds",
                                             },
                                             {
                                                 title: "Standing Kickback",
                                                 img: require("../../assets/standing-kickback.jpg"),
-                                                duration: "40 seconds"
+                                                duration: "40 seconds",
                                             },
                                             {
                                                 title: "Side-lying Leg Lifts",
                                                 img: require("../../assets/side-lying-leg-lifts.jpg"),
-                                                duration: "2*40 seconds"
+                                                duration: "2*40 seconds",
                                             },
                                             {
                                                 title: "Frog Squat",
                                                 img: require("../../assets/frog-squat.jpg"),
-                                                duration: "40 seconds"
+                                                duration: "40 seconds",
                                             },
                                             {
                                                 title: "Froggy Glute Lifts",
                                                 img: require("../../assets/froggy-glute-lifts.jpg"),
-                                                duration: "40 seconds"
+                                                duration: "40 seconds",
                                             },
                                         ],
-                                    }
+                                    },
                                 ],
                             })
                         }
@@ -155,32 +189,32 @@ export default function HomeScreen({ navigation }) {
                                             {
                                                 title: "Narrow Bodyweight Squat",
                                                 img: require("../../assets/Overhead-Squat.jpg"),
-                                                duration: "40 seconds"
+                                                duration: "40 seconds",
                                             },
                                             {
                                                 title: "Curtsy Squat",
                                                 img: require("../../assets/mountain-climbers.png"),
-                                                duration: "40 seconds"
+                                                duration: "40 seconds",
                                             },
                                             {
                                                 title: "Jump Squats",
                                                 img: require("../../assets/jump-squats.jpg"),
-                                                duration: "40 seconds"
+                                                duration: "40 seconds",
                                             },
                                             {
                                                 title: "Alternating Jump Lunges",
                                                 img: require("../../assets/alternating-jump-lunge.jpg"),
-                                                duration: "40 seconds"
+                                                duration: "40 seconds",
                                             },
                                             {
                                                 title: "Squat with Punches",
                                                 img: require("../../assets/squat-with-punches.jpg"),
-                                                duration: "40 seconds"
+                                                duration: "40 seconds",
                                             },
                                             {
                                                 title: "Curtsy Squat",
                                                 img: require("../../assets/curtsy-squat.jpg"),
-                                                duration: "40 seconds"
+                                                duration: "40 seconds",
                                             },
                                         ],
                                     },
@@ -203,39 +237,39 @@ export default function HomeScreen({ navigation }) {
                                             {
                                                 title: "Bodyweight Overhead Squats",
                                                 img: require("../../assets/Narrow-Squat.jpg"),
-                                                duration: "40 seconds"
+                                                duration: "40 seconds",
                                             },
                                             {
                                                 title: "Curtsy Squat",
                                                 img: require("../../assets/curtsy-squat.jpg"),
-                                                duration: "40 seconds"
+                                                duration: "40 seconds",
                                             },
                                             {
                                                 title: "Squat Side kicks",
                                                 img: require("../../assets/squat-side-kicks.jpg"),
-                                                duration: "40 seconds"
+                                                duration: "40 seconds",
                                             },
                                             {
                                                 title: "Frog Squat",
                                                 img: require("../../assets/frog-squat.jpg"),
-                                                duration: "40 seconds"
+                                                duration: "40 seconds",
                                             },
                                             {
                                                 title: "Squat Pulse",
                                                 img: require("../../assets/squat-pulse.jpg"),
-                                                duration: "40 seconds"
+                                                duration: "40 seconds",
                                             },
                                             {
                                                 title: "In-out Jump Squat",
                                                 img: require("../../assets/in-out-jump-squat.jpg"),
-                                                duration: "40 seconds"
+                                                duration: "40 seconds",
                                             },
                                         ],
                                     },
                                 ],
                             })
                         }
-                    />
+                    /> */}
                 </Section>
             </TableView>
         </ScrollView>

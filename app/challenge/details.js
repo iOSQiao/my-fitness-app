@@ -4,6 +4,14 @@ import { Cell, Section, TableView } from "react-native-tableview-simple";
 export default function DetailsScreen({ route }) {
     const { items } = route.params;
 
+    const formatDurationLabel = (exercise) => {
+        if (exercise.multiple === 1) {
+            return `${exercise.duration} seconds`;
+        } else {
+            return `${exercise.multiple}*${exercise.duration} seconds`;
+        }
+    };
+
     return (
         <ScrollView style={{ backgroundColor: "#f9f9f9" }}>
             <TableView>
@@ -18,14 +26,10 @@ export default function DetailsScreen({ route }) {
                                 cellStyle="RightDetail"
                                 contentContainerStyle={styles.cellContainer}
                                 cellImageView={
-                                    <Image
-                                        source={content.img}
-                                        style={styles.menuItemImage}
-                                    />
+                                    <Image source={content.img} style={styles.menuItemImage} />
                                 }
                                 title={content.title}
-                                detail={content.duration}
-                            
+                                detail={formatDurationLabel(content)}
                             />
                         ))}
                     </Section>
@@ -44,10 +48,10 @@ const styles = StyleSheet.create({
     },
     cellContainer: {
         flex: 1,
-        height: 90, 
-        alignItems: "center", 
-        justifyContent: "center", 
-        flexDirection: "row", 
+        height: 90,
+        alignItems: "center",
+        justifyContent: "center",
+        flexDirection: "row",
     },
     sectionHeader: {
         fontSize: 18, // Larger font for headers

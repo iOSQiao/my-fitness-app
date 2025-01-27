@@ -31,12 +31,12 @@ export default function HomeScreen({ navigation }) {
     );
 
     // clear all data
-    // useEffect(() => {
-    //     const _clearAllData = async () => {
-    //         await helper.clearAllData();
-    //     };
-    //     _clearAllData();
-    // }, []);
+    useEffect(() => {
+        const _clearAllData = async () => {
+            await helper.clearAllData();
+        };
+        _clearAllData();
+    }, []);
 
     const fetchData = async () => {
         const settings = await helper.getGlobalSettings();

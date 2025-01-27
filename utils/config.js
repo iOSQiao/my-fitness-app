@@ -5,7 +5,8 @@ export const defaultConfig = {
     challenges: [
         {
             id: 1001,
-            title: "The squats challenge",
+            title: "Squat",
+            tagline: "Squat Everyday, get a nice shape",
             img: require("../assets/images/home/challenge_1.jpg"),
             progress: Array.from({ length: 30 }, (_, i) => false),
             durationLabel: "30 days",
@@ -22,7 +23,8 @@ export const defaultConfig = {
         },
         {
             id: 1002,
-            title: "The push-ups challenge",
+            title: "Push-ups",
+            tagline: "Push-ups gives you a stronger arm",
             img: require("../assets/images/home/challenge_2.jpg"),
             progress: Array.from({ length: 30 }, (_, i) => false),
             durationLabel: "30 days",
@@ -39,7 +41,8 @@ export const defaultConfig = {
         },
         {
             id: 1003,
-            title: "The crunch challenge",
+            title: "Crunches",
+            tagline: "Crunches will shape your belly",
             img: require("../assets/images/home/challenge_3.jpg"),
             progress: Array.from({ length: 30 }, (_, i) => false),
             durationLabel: "30 days",
@@ -56,7 +59,8 @@ export const defaultConfig = {
         },
         {
             id: 1004,
-            title: "The pull-ups challenge",
+            title: "Pull-ups",
+            tagline: "Pull-ups will enhance your stamina",
             img: require("../assets/images/home/challenge_4.jpg"),
             progress: Array.from({ length: 30 }, (_, i) => false),
             durationLabel: "30 days",
@@ -76,6 +80,7 @@ export const defaultConfig = {
         {
             id: 2001,
             title: "Burpees, Squats & Planks",
+            tagline: "Have a try at small workout",
             img: require("../assets/planks.jpg"),
             progress: [],
             durationLabel: "",
@@ -123,6 +128,7 @@ export const defaultConfig = {
         {
             id: 2002,
             title: "Shape your body",
+            tagline: "Exercise to tone your Butt, Thighs and Legs",
             img: require("../assets/shape-body.jpg"),
             progress: [],
             durationLabel: "",
@@ -170,6 +176,7 @@ export const defaultConfig = {
         {
             id: 2003,
             title: "HIIT Workout",
+            tagline: "HIIT Workout will burn fat quickly",
             img: require("../assets/HIIT.jpg"),
             progress: [],
             durationLabel: "",
@@ -217,6 +224,7 @@ export const defaultConfig = {
         {
             id: 2004,
             title: "Squat Variations",
+            tagline: "Train your muscle at thighs",
             img: require("../assets/squat-variations.jpg"),
             progress: [],
             durationLabel: "",
