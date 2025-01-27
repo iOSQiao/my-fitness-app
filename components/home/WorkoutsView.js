@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { ScrollView, View, Image, Text, StyleSheet, Dimensions } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const { width } = Dimensions.get("window");
 
 import { defaultConfig } from "../../utils/config";
 
-export default function WorkoutsView() {
+export default function WorkoutsView({ onPress }) {
     const [items, setItems] = React.useState([]);
 
     useEffect(() => {
@@ -15,10 +16,12 @@ export default function WorkoutsView() {
     return (
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             {items.map((item, index) => (
-                <View key={index} style={styles.container}>
-                    <Image source={item.img} style={styles.img} />
-                    <Text style={styles.title}>{item.title}</Text>
-                </View>
+                <TouchableOpacity key={index} onPress={() => onPress && onPress(item)}>
+                    <View key={index} style={styles.container}>
+                        <Image source={item.img} style={styles.img} />
+                        <Text style={styles.title}>{item.title}</Text>
+                    </View>
+                </TouchableOpacity>
             ))}
         </ScrollView>
     );

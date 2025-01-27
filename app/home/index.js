@@ -15,7 +15,6 @@ export default function HomeScreen({ navigation }) {
     const [currentDay, setCurrentDay] = useState(0);
     const [currentChallengeId, setCurrentChallengeId] = useState(null);
 
-    //  TODO: 这里也应该从本地存储中获取
     const [workoutsTotal, setWorkoutsTotal] = useState(0);
     const [minutesTotal, setMinutesTotal] = useState(0);
 
@@ -25,12 +24,12 @@ export default function HomeScreen({ navigation }) {
         }, [])
     );
 
-    // useEffect(() => {
-    //     const _clearAllData = async () => {
-    //         await helper.clearAllData();
-    //     };
-    //     _clearAllData();
-    // }, []);
+    useEffect(() => {
+        const _clearAllData = async () => {
+            await helper.clearAllData();
+        };
+        _clearAllData();
+    }, []);
 
     const fetchData = async () => {
         const settings = await helper.getChallengeSettings();
@@ -43,24 +42,24 @@ export default function HomeScreen({ navigation }) {
         setCurrentChallengeId(challengeId);
         setWorkoutsTotal(settings.workoutsTotal);
         setMinutesTotal(settings.minutesTotal);
-
-        // setWorkoutsTotal(challenge.exercises.length);
-        // let totalDuration = 0;r
-        // challenge.exercises.forEach((exercise) => {
-        //     totalDuration += exercise.duration;
-        // });
-        // setMinutesTotal(parseInt((totalDuration / 60) * 30));
     };
 
-    const handleClickeChallenge = (item) => {
+    const handleClickCurrentChallenge = () => {
+        navigation.navigate("records", {
+            challengeId: currentChallengeId,
+        });
+    };
+
+    const handleClickChallenge = (item) => {
         navigation.navigate("records", {
             challengeId: item.id,
         });
     };
 
-    const handleClickeCurrentChallenge = () => {
-        navigation.navigate("records", {
-            challengeId: currentChallengeId,
+    const handleClickWorkout = (item) => {
+        navigation.navigate("details", {
+            isWorkout: true,
+            workoutId: item.id,
         });
     };
 
@@ -97,16 +96,16 @@ export default function HomeScreen({ navigation }) {
                                 currentDay={currentDay}
                                 workouts={workoutsTotal}
                                 minutes={minutesTotal}
-                                onPress={handleClickeCurrentChallenge}
+                                onPress={handleClickCurrentChallenge}
                             />
                         ) : null}
                         <Section
                             title={"Challenges"}
                             desc={"Start the Challenges and fulfill your Potential"}>
-                            <ChallengesView onPress={handleClickeChallenge}></ChallengesView>
+                            <ChallengesView onPress={handleClickChallenge}></ChallengesView>
                         </Section>
                         <Section title={"Workouts"} desc={"Test yourself and see concrete results"}>
-                            <WorkoutsView></WorkoutsView>
+                            <WorkoutsView onPress={handleClickWorkout}></WorkoutsView>
                         </Section>
                     </View>
                 </ScrollView>

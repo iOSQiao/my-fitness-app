@@ -8,14 +8,20 @@ import * as helper from "../../utils/challengeDataHelper";
 
 export default function DetailsScreen({ route, navigation }) {
     React.useLayoutEffect(() => {
-        navigation.setOptions({
-            title: `Day ${route.params.currentDay + 1}`,
-        });
+        if (route.params.isWorkout) {
+            navigation.setOptions({
+                title: "Workout",
+            });
+        } else {
+            navigation.setOptions({
+                title: `Day ${route.params.currentDay + 1}`,
+            });
+        }
     }, [navigation]);
 
     const [title, setTitle] = React.useState("");
     const [img, setImg] = React.useState(null);
-    const [level, setLevel] = useState(1);
+    const [level, setLevel] = useState(0);
     const [exercises, setExercises] = useState([]);
 
     useEffect(() => {
@@ -23,13 +29,22 @@ export default function DetailsScreen({ route, navigation }) {
     }, []);
 
     const fetchData = async () => {
-        const challengeId = route.params.challengeId;
         const settings = await helper.getChallengeSettings();
-        const index = settings.challenges.findIndex((c) => c.id === challengeId);
-        const challenge = settings.challenges[index];
-        setTitle(challenge?.title || "");
-        setImg(challenge?.img || null);
-        setExercises(challenge?.exercises || []);
+        if (route.params.isWorkout) {
+            const workoutId = route.params.workoutId;
+            const index = settings.workouts.findIndex((c) => c.id === workoutId);
+            const workout = settings.workouts[index];
+            setTitle(workout?.title || "");
+            setImg(workout?.img || null);
+            setExercises(workout?.exercises || []);
+        } else {
+            const challengeId = route.params.challengeId;
+            const index = settings.challenges.findIndex((c) => c.id === challengeId);
+            const challenge = settings.challenges[index];
+            setTitle(challenge?.title || "");
+            setImg(challenge?.img || null);
+            setExercises(challenge?.exercises || []);
+        }
     };
 
     const formatTime = (seconds) => {
@@ -45,7 +60,7 @@ export default function DetailsScreen({ route, navigation }) {
     useEffect(() => {
         let mseconds = 0;
         exercises.forEach((exercise) => {
-            mseconds += exercise.duration;
+            mseconds += exercise.duration * exercise.multiple;
         });
         setDurationMinutes(mseconds);
     }, [exercises]);
@@ -56,7 +71,15 @@ export default function DetailsScreen({ route, navigation }) {
 
     const handleChangeLevel = (level) => {
         setLevel(level);
-        setCalories(5 + (level - 1));
+        setCalories(5 + level);
+        const _exercises = [];
+        exercises.forEach((exercise) => {
+            _exercises.push({
+                ...exercise,
+                duration: exercise.duration * level,
+                durationLabel: `${exercise.duration * level} seconds`,
+            });
+        });
     };
 
     const handleSub = () => {
@@ -71,13 +94,25 @@ export default function DetailsScreen({ route, navigation }) {
     };
 
     const handleStart = () => {
-        navigation.navigate("begin", {
-            challengeId: route.params.challengeId,
-            currentDay: route.params.currentDay,
-            durationMinutes: durationMinutes,
-            spaceSeconds: spaceSeconds,
-            calories: calories,
-        });
+        if (route.params.isWorkout) {
+            navigation.navigate("begin", {
+                isWorkout: true,
+                workoutId: route.params.workoutId,
+                currentDay: route.params.currentDay,
+                durationMinutes: durationMinutes,
+                spaceSeconds: spaceSeconds,
+                calories: calories,
+            });
+        } else {
+            navigation.navigate("begin", {
+                isWorkout: false,
+                challengeId: route.params.challengeId,
+                currentDay: route.params.currentDay,
+                durationMinutes: durationMinutes,
+                spaceSeconds: spaceSeconds,
+                calories: calories,
+            });
+        }
     };
 
     const renderCenter = useMemo(() => {
@@ -111,13 +146,21 @@ export default function DetailsScreen({ route, navigation }) {
         );
     });
 
+    const formatDurationLabel = (exercise) => {
+        if (exercise.multiple === 1) {
+            return `${exercise.duration} seconds`;
+        } else {
+            return `${exercise.multiple}*${exercise.duration} seconds`;
+        }
+    };
+
     const renderExercises = useMemo(() => {
         return exercises.map((exercise, index) => (
             <View key={index} style={styles.exerciseCell}>
                 <Image source={exercise.img} style={styles.exerciseImg} />
                 <View>
-                    <Text style={styles.exerciseName}>{exercise.name}</Text>
-                    <Text style={styles.exerciseDuration}>{exercise.duration} seconds</Text>
+                    <Text style={styles.exerciseName}>{exercise.title}</Text>
+                    <Text style={styles.exerciseDuration}>{formatDurationLabel(exercise)}</Text>
                 </View>
             </View>
         ));
@@ -135,7 +178,11 @@ export default function DetailsScreen({ route, navigation }) {
                         <View style={styles.main}>
                             <LevelView level={level} onChange={handleChangeLevel} />
                             {renderCenter}
-                            <Text style={styles.exercisesTitle}>Exercises</Text>
+                            <Text style={styles.exercisesTitle}>
+                                {route.params.isWorkout
+                                    ? `${exercises.length} Exercises`
+                                    : "Exercises"}
+                            </Text>
                             <View style={styles.divide}></View>
                             {renderExercises}
                         </View>
@@ -168,6 +215,7 @@ const styles = StyleSheet.create({
     },
     bg: {
         width: "100%",
+        height: 240,
     },
     title: {
         position: "absolute",
@@ -228,6 +276,7 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         paddingRight: 20,
         paddingBottom: 20,
+        marginTop: 20,
     },
     exerciseImg: {
         width: 120,

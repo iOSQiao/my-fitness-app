@@ -82,6 +82,7 @@ export default function RecordsScreen({ route, navigation }) {
 
     const handleStartDay = async () => {
         navigation.navigate("details", {
+            isWorkout: false,
             challengeId: route.params.challengeId,
             currentDay: currentDay,
         });

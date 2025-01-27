@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function LevelView({ level = 1, onChange }) {
-    const [data, setData] = React.useState(Array.from({ length: 6 }, (_, i) => i + 1));
+    const [data, setData] = React.useState(Array.from({ length: 6 }, (_, i) => i));
 
     return (
         <View style={styles.container}>
