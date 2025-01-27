@@ -3,7 +3,7 @@ import { View, Text, ScrollView, StyleSheet, Image, Alert, SafeAreaView } from "
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 
-import * as helper from "../../utils/challengeDataHelper";
+import * as helper from "../../utils/globalSettingsHelper";
 import { defaultConfig } from "../../utils/config";
 
 export default function RecordsScreen({ route, navigation }) {
@@ -37,11 +37,11 @@ export default function RecordsScreen({ route, navigation }) {
 
     const handlerClearChallenge = async () => {
         const challengeId = route.params.challengeId;
-        const settings = await helper.getChallengeSettings();
+        const settings = await helper.getGlobalSettings();
         const index = settings.challenges.findIndex((c) => c.id === challengeId);
         const defaultChallenge = defaultConfig.challenges[index];
         settings.challenges[index] = defaultChallenge;
-        await helper.saveChallengeSettings({ ...settings });
+        await helper.saveGlobalSettings({ ...settings });
         fetchData();
     };
 
@@ -57,7 +57,7 @@ export default function RecordsScreen({ route, navigation }) {
 
     const fetchData = async () => {
         const challengeId = route.params.challengeId;
-        const settings = await helper.getChallengeSettings();
+        const settings = await helper.getGlobalSettings();
         const index = settings.challenges.findIndex((c) => c.id === challengeId);
         const challenge = settings.challenges[index];
         setTitle(challenge?.title || "");
@@ -143,23 +143,35 @@ export default function RecordsScreen({ route, navigation }) {
                                             if (groupIndex * numColumns + index === currentDay) {
                                                 return (
                                                     <View key={index} style={styles.dayBoxActive}>
-                                                        <Text style={styles.dayLabelActive}>
-                                                            {groupIndex * numColumns + index + 1}
-                                                        </Text>
+                                                        <TouchableOpacity
+                                                            style={styles.dayClickContainer}
+                                                            onPress={handleStartDay}>
+                                                            <Text style={styles.dayLabelActive}>
+                                                                {groupIndex * numColumns +
+                                                                    index +
+                                                                    1}
+                                                            </Text>
+                                                        </TouchableOpacity>
                                                     </View>
                                                 );
                                             }
                                             if (!!day) {
                                                 return (
                                                     <View key={index} style={styles.dayBox}>
-                                                        <Text style={styles.dayLabelSuccess}>
-                                                            {groupIndex * numColumns + index + 1}
-                                                        </Text>
-                                                        <Ionicons
-                                                            name="checkmark"
-                                                            size={36}
-                                                            color="#000"
-                                                        />
+                                                        <TouchableOpacity
+                                                            style={styles.dayClickContainer}
+                                                            onPress={handleStartDay}>
+                                                            <Text style={styles.dayLabelSuccess}>
+                                                                {groupIndex * numColumns +
+                                                                    index +
+                                                                    1}
+                                                            </Text>
+                                                            <Ionicons
+                                                                name="checkmark"
+                                                                size={36}
+                                                                color="#000"
+                                                            />
+                                                        </TouchableOpacity>
                                                     </View>
                                                 );
                                             }
@@ -172,9 +184,13 @@ export default function RecordsScreen({ route, navigation }) {
                                                             ? { borderRightWidth: 0 }
                                                             : {},
                                                     ]}>
-                                                    <Text style={styles.dayLabel}>
-                                                        {groupIndex * numColumns + index + 1}
-                                                    </Text>
+                                                    <TouchableOpacity
+                                                        style={styles.dayClickContainer}
+                                                        onPress={handleStartDay}>
+                                                        <Text style={styles.dayLabel}>
+                                                            {groupIndex * numColumns + index + 1}
+                                                        </Text>
+                                                    </TouchableOpacity>
                                                 </View>
                                             );
                                         })}
@@ -295,6 +311,12 @@ const styles = StyleSheet.create({
         marginRight: 20,
         marginBottom: 4,
     },
+    dayClickContainer: {
+        width: "100%",
+        height: "100%",
+        justifyContent: "center",
+        alignItems: "center",
+    },
     dayRow: {
         width: "100%",
         flexDirection: "row",
@@ -303,7 +325,6 @@ const styles = StyleSheet.create({
     dayBox: {
         flex: 1,
         justifyContent: "center",
-        alignItems: "center",
         height: 50,
         borderTopWidth: 1,
         borderBottomWidth: 1,
@@ -320,7 +341,6 @@ const styles = StyleSheet.create({
     dayBoxActive: {
         flex: 1,
         justifyContent: "center",
-        alignItems: "center",
         height: 50,
         borderTopWidth: 1,
         borderBottomWidth: 1,

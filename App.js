@@ -8,7 +8,7 @@ import ChallengeLayout from "./app/challenge/_layout";
 import WorkoutsScreen from "./app/workouts/_layout";
 import ExercisesLayout from "./app/exercises/_layout";
 
-import * as helper from "./utils/challengeDataHelper";
+import * as helper from "./utils/globalSettingsHelper";
 
 const Tab = createBottomTabNavigator();
 
@@ -18,7 +18,7 @@ const CustomTabBarIcon = ({ source, color, size }) => {
 
 export default function App() {
     useEffect(() => {
-        helper.initChallengeSettings();
+        helper.initGlobalSettings();
     }, []);
 
     return (

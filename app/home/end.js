@@ -3,7 +3,7 @@ import { View, Text, ScrollView, StyleSheet, Image } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import * as helper from "../../utils/challengeDataHelper";
+import * as helper from "../../utils/globalSettingsHelper";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function EndScreen({ route, navigation }) {
@@ -31,7 +31,7 @@ export default function EndScreen({ route, navigation }) {
 
     const fetchData = async () => {
         const challengeId = route.params.challengeId;
-        const settings = await helper.getChallengeSettings();
+        const settings = await helper.getGlobalSettings();
         const index = settings.challenges.findIndex((c) => c.id === challengeId);
         const challenge = settings.challenges[index];
         setTitle(challenge?.title || "");

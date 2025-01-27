@@ -4,7 +4,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 
 import LevelView from "../../components/home/LevelView";
-import * as helper from "../../utils/challengeDataHelper";
+import * as helper from "../../utils/globalSettingsHelper";
 
 export default function DetailsScreen({ route, navigation }) {
     React.useLayoutEffect(() => {
@@ -29,7 +29,7 @@ export default function DetailsScreen({ route, navigation }) {
     }, []);
 
     const fetchData = async () => {
-        const settings = await helper.getChallengeSettings();
+        const settings = await helper.getGlobalSettings();
         if (route.params.isWorkout) {
             const workoutId = route.params.workoutId;
             const index = settings.workouts.findIndex((c) => c.id === workoutId);
@@ -69,17 +69,25 @@ export default function DetailsScreen({ route, navigation }) {
     const [spaceSeconds, setSpaceSeconds] = useState(5);
     const [calories, setCalories] = useState(5);
 
-    const handleChangeLevel = (level) => {
-        setLevel(level);
-        setCalories(5 + level);
+    const handleChangeLevel = (value) => {
+        const currentLevel = level;
+        setLevel(value);
+        setCalories(5 + value);
         const _exercises = [];
         exercises.forEach((exercise) => {
-            _exercises.push({
-                ...exercise,
-                duration: exercise.duration * level,
-                durationLabel: `${exercise.duration * level} seconds`,
-            });
+            if (value > currentLevel) {
+                _exercises.push({
+                    ...exercise,
+                    duration: exercise.duration + Math.abs(value - currentLevel) * 10,
+                });
+            } else {
+                _exercises.push({
+                    ...exercise,
+                    duration: exercise.duration - Math.abs(value - currentLevel) * 10,
+                });
+            }
         });
+        setExercises(_exercises);
     };
 
     const handleSub = () => {
@@ -93,8 +101,27 @@ export default function DetailsScreen({ route, navigation }) {
         setSpaceSeconds(spaceSeconds + 5);
     };
 
-    const handleStart = () => {
+    const saveChallengeExercise = async () => {
+        const settings = await helper.getGlobalSettings();
+        const challengeId = route.params.challengeId;
+        const index = settings.challenges.findIndex((c) => c.id === challengeId);
+        const challenge = settings.challenges[index];
+        challenge.exercises = exercises;
+        await helper.saveGlobalSettings({ ...settings });
+    };
+
+    const saveWorkoutExercise = async () => {
+        const settings = await helper.getGlobalSettings();
+        const workoutId = route.params.workoutId;
+        const index = settings.workouts.findIndex((c) => c.id === workoutId);
+        const workout = settings.workouts[index];
+        workout.exercises = exercises;
+        await helper.saveGlobalSettings({ ...settings });
+    };
+
+    const handleStart = async () => {
         if (route.params.isWorkout) {
+            saveWorkoutExercise();
             navigation.navigate("begin", {
                 isWorkout: true,
                 workoutId: route.params.workoutId,
@@ -104,6 +131,7 @@ export default function DetailsScreen({ route, navigation }) {
                 calories: calories,
             });
         } else {
+            saveChallengeExercise();
             navigation.navigate("begin", {
                 isWorkout: false,
                 challengeId: route.params.challengeId,

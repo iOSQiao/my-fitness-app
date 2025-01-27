@@ -6,7 +6,7 @@ import ChallengesView from "../../components/home/ChallengesView";
 import WorkoutsView from "../../components/home/WorkoutsView";
 import CurrentChallenge from "../../components/home/CurrentChallenge";
 
-import * as helper from "../../utils/challengeDataHelper";
+import * as helper from "../../utils/globalSettingsHelper";
 import { useFocusEffect } from "@react-navigation/native";
 
 export default function HomeScreen({ navigation }) {
@@ -24,15 +24,15 @@ export default function HomeScreen({ navigation }) {
         }, [])
     );
 
-    useEffect(() => {
-        const _clearAllData = async () => {
-            await helper.clearAllData();
-        };
-        _clearAllData();
-    }, []);
+    // useEffect(() => {
+    //     const _clearAllData = async () => {
+    //         await helper.clearAllData();
+    //     };
+    //     _clearAllData();
+    // }, []);
 
     const fetchData = async () => {
-        const settings = await helper.getChallengeSettings();
+        const settings = await helper.getGlobalSettings();
         const challengeId = settings.currentChallengeId;
         const index = settings.challenges.findIndex((c) => c.id === challengeId);
         const challenge = settings.challenges[index];

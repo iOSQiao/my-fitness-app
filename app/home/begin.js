@@ -4,7 +4,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 
-import * as helper from "../../utils/challengeDataHelper";
+import * as helper from "../../utils/globalSettingsHelper";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -33,7 +33,7 @@ export default function BeginScreen({ route, navigation }) {
     }, []);
 
     const fetchData = async () => {
-        const settings = await helper.getChallengeSettings();
+        const settings = await helper.getGlobalSettings();
         if (route.params.isWorkout) {
             const workoutId = route.params.workoutId;
             const index = settings.workouts.findIndex((c) => c.id === workoutId);
@@ -66,7 +66,7 @@ export default function BeginScreen({ route, navigation }) {
     }, []);
 
     const saveChallengeExercise = async () => {
-        const settings = await helper.getChallengeSettings();
+        const settings = await helper.getGlobalSettings();
         const challengeId = route.params.challengeId;
         const index = settings.challenges.findIndex((c) => c.id === challengeId);
         const challenge = settings.challenges[index];
@@ -80,14 +80,14 @@ export default function BeginScreen({ route, navigation }) {
         settings.challenges[index] = challenge;
         settings.workoutsTotal += 1;
         settings.minutesTotal += route.params.durationMinutes;
-        await helper.saveChallengeSettings({ ...settings });
+        await helper.saveGlobalSettings({ ...settings });
     };
 
     const saveWorkoutExercise = async () => {
-        const settings = await helper.getChallengeSettings();
+        const settings = await helper.getGlobalSettings();
         settings.workoutsTotal += 1;
         settings.minutesTotal += route.params.durationMinutes;
-        await helper.saveChallengeSettings({ ...settings });
+        await helper.saveGlobalSettings({ ...settings });
     };
 
     const handleExercise = () => {

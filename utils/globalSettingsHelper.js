@@ -2,20 +2,20 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { defaultConfig } from "./config";
 
-const CacheDataName = "challengeData";
+const CacheDataName = "GlobalSeetings";
 
 function isString(value) {
     return typeof value === "string";
 }
 
 // 初始化全局变量
-export const initChallengeSettings = async () => {
+export const initGlobalSettings = async () => {
     try {
         const jsonValue = await AsyncStorage.getItem(CacheDataName);
         if (jsonValue == null) {
-            await saveChallengeSettings(defaultConfig);
+            await saveGlobalSettings(defaultConfig);
         } else {
-            await saveChallengeSettings(jsonValue);
+            await saveGlobalSettings(jsonValue);
         }
     } catch (e) {
         console.error(e);
@@ -24,7 +24,7 @@ export const initChallengeSettings = async () => {
 };
 
 // 存储全局变量
-export const saveChallengeSettings = async (settings) => {
+export const saveGlobalSettings = async (settings) => {
     try {
         let jsonValue = settings;
         if (!isString(settings)) {
@@ -38,7 +38,7 @@ export const saveChallengeSettings = async (settings) => {
 };
 
 // 读取全局变量
-export const getChallengeSettings = async () => {
+export const getGlobalSettings = async () => {
     try {
         const jsonValue = await AsyncStorage.getItem(CacheDataName);
         if (!isString(jsonValue)) {
@@ -56,7 +56,7 @@ export const clearAllData = async () => {
     try {
         await AsyncStorage.clear();
         console.log("All data cleared");
-        await initChallengeSettings();
+        await initGlobalSettings();
     } catch (e) {
         console.error("Error clearing data:", e);
     }
