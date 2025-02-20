@@ -1,10 +1,17 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, Button, ScrollView, Image } from "react-native";
 import { Cell, Section, TableView } from "react-native-tableview-simple";
+import { useFocusEffect } from "@react-navigation/native";
 
 import * as helper from "../../utils/globalSettingsHelper";
 
 export default function HomeScreen({ navigation }) {
+    useFocusEffect(
+        React.useCallback(() => {
+            navigation.getParent()?.setOptions({ tabBarStyle: { display: "flex" } });
+        })
+    );
+
     const [workouts, setWorkouts] = useState([]);
 
     useEffect(() => {
@@ -66,15 +73,20 @@ export default function HomeScreen({ navigation }) {
                             tagline={workout.tagline}
                             eta="30"
                             imgUri={workout.img}
-                            action={() =>
-                                navigation.navigate("Workout", {
-                                    items: [
-                                        {
-                                            title: "Exercise",
-                                            contents: workout.exercises,
-                                        },
-                                    ],
-                                })
+                            action={
+                                () =>
+                                    navigation.navigate("details", {
+                                        isWorkout: true,
+                                        workoutId: workout.id,
+                                    })
+                                // navigation.navigate("Workout", {
+                                //     items: [
+                                //         {
+                                //             title: "Exercise",
+                                //             contents: workout.exercises,
+                                //         },
+                                //     ],
+                                // })
                             }
                         />
                     ))}

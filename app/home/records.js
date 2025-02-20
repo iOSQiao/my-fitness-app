@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { View, Text, ScrollView, StyleSheet, Image, Alert, SafeAreaView } from "react-native";
+import { View, Text, ScrollView, StyleSheet, Image, Alert, SafeAreaView, TouchableOpacity as TB } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -199,11 +199,11 @@ export default function RecordsScreen({ route, navigation }) {
                 </View>
                 <View style={styles.startBtnContainer}>
                     <View style={styles.startBtn}>
-                        <TouchableOpacity onPress={handleStartDay}>
+                        <TB onPress={handleStartDay}>
                             <Text style={styles.startLabel}>
                                 START DAY {currentDay === -1 ? "" : currentDay + 1}
                             </Text>
-                        </TouchableOpacity>
+                        </TB>
                     </View>
                 </View>
             </View>
