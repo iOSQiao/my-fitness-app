@@ -263,7 +263,6 @@ export default function BeginScreen({ route, navigation }) {
                 onRequestClose={() => setModalVisible(false)}>
                 <View style={styles.modalContainer}>
                     <View style={styles.modalContent}>
-                        <Text style={styles.modalText}>这是一个全屏半透明背景的Modal</Text>
                         <View style={styles.modalButtonGroup}>
                             <View style={styles.modalButtonContainer}>
                                 <View style={styles.modalButton}>
